@@ -5,8 +5,12 @@ import main.GamePanel;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class OBJ_Boots extends SuperObject {
+
+    private static final Logger logger = Logger.getLogger(OBJ_Boots.class.getName());
 
     public OBJ_Boots(GamePanel gp) {
 
@@ -18,7 +22,7 @@ public class OBJ_Boots extends SuperObject {
             uTool.scaleImage(image, gp.tileSize, gp.tileSize);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error loading image: " + name, e);
         }
 
     }

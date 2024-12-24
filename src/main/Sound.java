@@ -4,8 +4,12 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.net.URL;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Sound {
+
+    private static final Logger logger = Logger.getLogger(Sound.class.getName());
 
     Clip clip;
     URL[] soundURL = new URL[30];
@@ -29,7 +33,7 @@ public class Sound {
             clip.open(asi);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error loading image: " + i, e);
         }
 
     }

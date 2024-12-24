@@ -10,8 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class TileManager {
+
+    private static final Logger logger = Logger.getLogger(TileManager.class.getName());
 
     GamePanel gp;
     public Tile[] tile;
@@ -53,7 +57,7 @@ public class TileManager {
             tile[index].collision = collision;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error loading image: " + imageName, e);
         }
 
     }
@@ -92,7 +96,7 @@ public class TileManager {
             br.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error loading image: " + filePath, e);
         }
 
     }

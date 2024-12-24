@@ -12,9 +12,12 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Player extends Entity {
 
+    private static final Logger logger = Logger.getLogger(Player.class.getName());
 
     GamePanel gp;
     KeyHandler keyH;
@@ -41,11 +44,9 @@ public class Player extends Entity {
 
         setDefaultValues();
         getPlayerImage();
-
     }
 
     public void setDefaultValues() {
-
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
         speed = 4;
@@ -73,18 +74,16 @@ public class Player extends Entity {
         try {
 
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/" + imageName + ".png")));
-
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error loading image: " + imageName, e);
         }
 
         return image;
     }
 
     public void update() {
-
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if (keyH.upPressed) {
                 direction = "up";
@@ -96,17 +95,17 @@ public class Player extends Entity {
                 direction = "right";
             }
 
-            //CHECK TILE COLLISION
+
+            // CHECK TILE COLLISION
             collisionOn = false;
             gp.cChecker.checkTile(this);
 
-            //CHECK OBJECT COLLISION
+            // CHECK OBJECT COLLISION
             int objIndex = gp.cChecker.checkObject(this, true);
             pickObject(objIndex);
 
-            //IF COLLISION IS FALSE, PLAYER CAN MOVE
+            // IF COLLISION IS FALSE, PLAYER CAN MOVE
             if (!collisionOn) {
-
                 switch (direction) {
                     case "up" -> worldY -= speed;
                     case "down" -> worldY += speed;
@@ -118,78 +117,56 @@ public class Player extends Entity {
 
             spriteCounter++;
             if (spriteCounter > 12) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else if (spriteNum == 2) {
-                    spriteNum = 1;
-                }
+                spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
         } else {
-
             standCounter++;
 
             if (standCounter == 20) {
-
                 spriteNum = 1;
                 standCounter = 0;
-
             }
-
         }
-
     }
 
     public void pickObject(int i) {
-
         if (i != 999) {
-
             String objectName = gp.obj[i].name;
 
             switch (objectName) {
                 case "Key" -> {
-
                     gp.playSE(1);
                     hasKey++;
                     gp.obj[i] = null;
                     gp.ui.showMessage("You got a Key !");
                 }
                 case "Door" -> {
-
                     if (hasKey > 0) {
-
                         gp.playSE(3);
                         gp.obj[i] = null;
                         hasKey--;
                         gp.ui.showMessage("You opened a Door !");
-
                     } else {
-
                         gp.ui.showMessage("You Need a Key !");
-
                     }
                 }
                 case "Boots" -> {
-
                     gp.playSE(2);
                     speed += 2;
                     gp.obj[i] = null;
                     gp.ui.showMessage("Speed Up !");
                 }
                 case "Chest" -> {
-
                     gp.ui.gameFinished = true;
                     gp.stopMusic();
                     gp.playSE(4);
                 }
             }
-
         }
-
     }
 
     public void draw(Graphics2D g2) {
-
         BufferedImage image = null;
 
         switch (direction) {
@@ -233,7 +210,5 @@ public class Player extends Entity {
             g2.setColor(Color.red);
             g2.drawRect(screenX + solidArea.y, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
-
     }
-
 }
