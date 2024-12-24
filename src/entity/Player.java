@@ -3,23 +3,14 @@ package entity;
 import debugger.Debugger;
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
 
-import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Player extends Entity {
 
-    private static final Logger logger = Logger.getLogger(Player.class.getName());
-
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
@@ -30,6 +21,8 @@ public class Player extends Entity {
     Debugger debugger = new Debugger();
 
     public Player(GamePanel gp, KeyHandler keyH) {
+
+        super(gp);
 
         this.gp = gp;
         this.keyH = keyH;
@@ -54,32 +47,15 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
 
-        up1 = setup("boy_up_1");
-        up2 = setup("boy_up_2");
-        down1 = setup("boy_down_1");
-        down2 = setup("boy_down_2");
-        left1 = setup("boy_left_1");
-        left2 = setup("boy_left_2");
-        right1 = setup("boy_right_1");
-        right2 = setup("boy_right_2");
+        up1 = setup("/player/boy_up_1");
+        up2 = setup("/player/boy_up_2");
+        down1 = setup("/player/boy_down_1");
+        down2 = setup("/player/boy_down_2");
+        left1 = setup("/player/boy_left_1");
+        left2 = setup("/player/boy_left_2");
+        right1 = setup("/player/boy_right_1");
+        right2 = setup("/player/boy_right_2");
 
-    }
-
-    public BufferedImage setup(String imageName) {
-
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
-
-        try {
-
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/" + imageName + ".png")));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error loading image: " + imageName, e);
-        }
-
-        return image;
     }
 
     public void update() {
@@ -136,6 +112,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
+
         BufferedImage image = null;
 
         switch (direction) {
