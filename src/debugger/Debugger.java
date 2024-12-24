@@ -16,7 +16,7 @@ public class Debugger {
     //Set solidAreaDebugSwitch as true
     public void showSolidAreaOfPlayer() {
 
-        gp.player.solidAreaDebugSwitch = true;
+        gp.player.solidAreaDebugSwitch = false;
 
     }
 
