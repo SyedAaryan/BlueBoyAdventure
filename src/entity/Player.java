@@ -25,7 +25,6 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
-    public int hasKey = 0;
     public int standCounter = 0;
 
     Debugger debugger = new Debugger();
@@ -132,37 +131,7 @@ public class Player extends Entity {
 
     public void pickObject(int i) {
         if (i != 999) {
-            String objectName = gp.obj[i].name;
 
-            switch (objectName) {
-                case "Key" -> {
-                    gp.playSE(1);
-                    hasKey++;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("You got a Key !");
-                }
-                case "Door" -> {
-                    if (hasKey > 0) {
-                        gp.playSE(3);
-                        gp.obj[i] = null;
-                        hasKey--;
-                        gp.ui.showMessage("You opened a Door !");
-                    } else {
-                        gp.ui.showMessage("You Need a Key !");
-                    }
-                }
-                case "Boots" -> {
-                    gp.playSE(2);
-                    speed += 2;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("Speed Up !");
-                }
-                case "Chest" -> {
-                    gp.ui.gameFinished = true;
-                    gp.stopMusic();
-                    gp.playSE(4);
-                }
-            }
         }
     }
 
