@@ -4,8 +4,7 @@ import main.GamePanel;
 import main.KeyHandler;
 
 import javax.imageio.ImageIO;
-import java.awt.Rectangle;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -20,6 +19,9 @@ public class Player extends Entity {
     public final int screenY;
 
     public int hasKey = 0;
+
+    public Boolean solidAreaDebugSwitch = false;
+
 
     public Player(GamePanel gp, KeyHandler keyH) {
 
@@ -117,42 +119,42 @@ public class Player extends Entity {
 
             String objectName = gp.obj[i].name;
 
-            if (objectName.equals("Key")) {
+            switch (objectName) {
+                case "Key" -> {
 
-                gp.playSE(1);
-                hasKey++;
-                gp.obj[i] = null;
-                gp.ui.showMessage("You got a Key !");
-
-
-            } else if (objectName.equals("Door")) {
-
-                if (hasKey > 0) {
-
-                    gp.playSE(3);
+                    gp.playSE(1);
+                    hasKey++;
                     gp.obj[i] = null;
-                    hasKey--;
-                    gp.ui.showMessage("You opened a Door !");
-
-                } else {
-
-                    gp.ui.showMessage("You Need a Key !");
-
+                    gp.ui.showMessage("You got a Key !");
                 }
+                case "Door" -> {
 
-            } else if (objectName.equals("Boots")) {
+                    if (hasKey > 0) {
 
-                gp.playSE(2);
-                speed += 2;
-                gp.obj[i] = null;
-                gp.ui.showMessage("Speed Up !");
+                        gp.playSE(3);
+                        gp.obj[i] = null;
+                        hasKey--;
+                        gp.ui.showMessage("You opened a Door !");
 
-            } else if (objectName.equals("Chest")) {
+                    } else {
 
-                gp.ui.gameFinished = true;
-                gp.stopMusic();
-                gp.playSE(4);
+                        gp.ui.showMessage("You Need a Key !");
 
+                    }
+                }
+                case "Boots" -> {
+
+                    gp.playSE(2);
+                    speed += 2;
+                    gp.obj[i] = null;
+                    gp.ui.showMessage("Speed Up !");
+                }
+                case "Chest" -> {
+
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
+                    gp.playSE(4);
+                }
             }
 
         }
@@ -199,6 +201,11 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+        if (solidAreaDebugSwitch) {
+            g2.setColor(Color.red);
+            g2.drawRect(screenX + solidArea.y, screenY + solidArea.y, solidArea.width, solidArea.height);
+        }
 
     }
 

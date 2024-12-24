@@ -1,5 +1,6 @@
 package main;
 
+import debugger.Debugger;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -39,6 +40,9 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     Thread gameThread;
 
+    //DEBUGGING
+    Debugger debugger = new Debugger(this);
+
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[10];
@@ -56,6 +60,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUpGame() {
 
         aSetter.setObject();
+
+        debugger.showSolidAreaOfPlayer();
 
         playMusic(0);
 
