@@ -1,5 +1,6 @@
 package entity;
 
+import debugger.Debugger;
 import main.GamePanel;
 import main.KeyHandler;
 
@@ -19,10 +20,9 @@ public class Player extends Entity {
     public final int screenY;
 
     public int hasKey = 0;
-
-    public Boolean solidAreaDebugSwitch = false;
     public int standCounter = 0;
 
+    Debugger debugger = new Debugger();
 
     public Player(GamePanel gp, KeyHandler keyH) {
 
@@ -214,7 +214,7 @@ public class Player extends Entity {
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 
-        if (solidAreaDebugSwitch) {
+        if (debugger.solidAreaOfPlayerDebugSwitch) {
             g2.setColor(Color.red);
             g2.drawRect(screenX + solidArea.y, screenY + solidArea.y, solidArea.width, solidArea.height);
         }

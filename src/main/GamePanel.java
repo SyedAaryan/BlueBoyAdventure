@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     //DEBUGGING
-    Debugger debugger = new Debugger(this);
+    Debugger debugger = new Debugger();
 
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
@@ -60,8 +60,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUpGame() {
 
         aSetter.setObject();
-
-        debugger.showSolidAreaOfPlayer();
 
         playMusic(0);
 
@@ -117,6 +115,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
+        //DEBUG
+        long drawStart = 0;
+        if (debugger.checkDrawTime) {
+            drawStart = System.nanoTime();
+        }
+
+
         //THE TILES
         tileM.draw(g2);
 
@@ -132,6 +137,15 @@ public class GamePanel extends JPanel implements Runnable {
 
         //UI
         ui.draw(g2);
+
+        //DEBUG
+        if (debugger.checkDrawTime) {
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
+            g2.setColor(Color.white);
+            g2.drawString("Draw Time " + passed, 10, 400);
+            System.out.println("Draw Time " + passed);
+        }
 
         g2.dispose();
 
