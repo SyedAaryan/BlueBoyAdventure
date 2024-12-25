@@ -14,6 +14,7 @@ public class NPC_OldMan extends Entity {
         speed = 1;
 
         getNPCImage();
+        setDialogue();
 
     }
 
@@ -27,6 +28,15 @@ public class NPC_OldMan extends Entity {
         left2 = setup("/npc/oldman_left_2");
         right1 = setup("/npc/oldman_right_1");
         right2 = setup("/npc/oldman_right_2");
+
+    }
+
+    public void setDialogue() {
+
+        dialogues[0] = "Hello, Lad";
+        dialogues[1] = "So you have come to this island to find the treasure ";
+        dialogues[2] = "I used to be a great wizard but now....... I am a bit too old for an adventure";
+        dialogues[3] = "Well, GOOD LUCK !!!";
 
     }
 
@@ -54,6 +64,24 @@ public class NPC_OldMan extends Entity {
             }
 
             actionLockCounter = 0;
+
+        }
+
+    }
+
+    public void speak() {
+
+        if (dialogues[dialogueIndex] == null) {
+            dialogueIndex = 0;
+        }
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        dialogueIndex++;
+
+        switch (gp.player.direction) {
+            case "up" -> direction = "down";
+            case "down" -> direction = "up";
+            case "left" -> direction = "right";
+            case "right" -> direction = "left";
 
         }
 
