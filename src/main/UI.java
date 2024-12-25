@@ -80,10 +80,17 @@ public class UI {
 
         drawSubWindow(x, y, width, height);
 
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32F));
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28F));
         x += gp.tileSize;
         y += gp.tileSize;
-        g2.drawString(currentDialogue, x, y);
+
+        for (String line : currentDialogue.split("\n")) {
+
+            g2.drawString(line, x, y);
+            y += 40;
+
+        }
+
 
     }
 

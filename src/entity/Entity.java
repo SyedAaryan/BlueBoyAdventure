@@ -43,11 +43,28 @@ public class Entity {
 
     }
 
-    public void setAction(){}
+    public void setAction() {
+    }
 
-    public void speak(){}
+    public void speak() {
 
-    public void update(){
+        if (dialogues[dialogueIndex] == null) {
+            dialogueIndex = 0;
+        }
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        dialogueIndex++;
+
+        switch (gp.player.direction) {
+            case "up" -> direction = "down";
+            case "down" -> direction = "up";
+            case "left" -> direction = "right";
+            case "right" -> direction = "left";
+
+        }
+
+    }
+
+    public void update() {
 
         setAction();
 
@@ -75,7 +92,7 @@ public class Entity {
 
     }
 
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2) {
 
         BufferedImage image = null;
 
