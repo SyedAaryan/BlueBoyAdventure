@@ -1,6 +1,7 @@
 package main;
 
 import entity.NPC_OldMan;
+import object.OBJ_Door;
 
 public class AssetSetter {
 
@@ -14,6 +15,9 @@ public class AssetSetter {
 
     public void setObject() {
 
+        gp.obj[0] = new OBJ_Door(gp);
+        gp.obj[0].worldX = gp.tileSize * 21;
+        gp.obj[0].worldY = gp.tileSize * 22;
 
     }
 

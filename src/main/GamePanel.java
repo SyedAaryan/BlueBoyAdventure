@@ -3,7 +3,6 @@ package main;
 import debugger.Debugger;
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
@@ -11,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -47,8 +48,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
-    public SuperObject[] obj = new SuperObject[10];
+    public Entity[] obj = new Entity[10];
     public Entity[] npc = new Entity[10];
+    ArrayList<Entity> entityList = new ArrayList<>();
 
     // GAME STATE
     public int gameState;
@@ -154,28 +156,54 @@ public class GamePanel extends JPanel implements Runnable {
 
         //OTHER STATES
         else {
+
             //THE TILES
             tileM.draw(g2);
 
-            //THE OBJECTS
-            for (SuperObject superObject : obj) {
-                if (superObject != null) {
-                    superObject.draw(g2, this);
-                }
-            }
+            // IF YOU'RE CONFUSED ABOUT WHY THIS IS BEING DONE, GO TO THE END OF THIS FILE
+            // ADD ENTITIES TO THE LIST
+            entityList.add(player);
 
-            //THE NPC
+            // IF YOU'RE CONFUSED ABOUT WHY THIS IS BEING DONE, GO TO THE END OF THIS FILE
+            // ADDING NPC's
             for (Entity entity : npc) {
+
                 if (entity != null) {
-                    entity.draw(g2);
+                    entityList.add(entity);
                 }
+
             }
 
-            //THE PLAYER
-            player.draw(g2);
+            // IF YOU'RE CONFUSED ABOUT WHY THIS IS BEING DONE, GO TO THE END OF THIS FILE
+            // ADDING OBJECTS
+            for (Entity entity : obj) {
+
+                if (entity != null) {
+                    entityList.add(entity);
+                }
+
+            }
+
+            // IF YOU'RE CONFUSED ABOUT WHY THIS IS BEING DONE, GO TO THE END OF THIS FILE
+            // SORTING
+            entityList.sort(Comparator.comparingInt(e -> e.worldY));
+
+            // IF YOU'RE CONFUSED ABOUT WHY THIS IS BEING DONE, GO TO THE END OF THIS FILE
+            // DRAW ENTITIES
+            for (Entity entity : entityList) {
+
+                entity.draw(g2);
+
+            }
+
+            // IF YOU'RE CONFUSED ABOUT WHY THIS IS BEING DONE, GO TO THE END OF THIS FILE
+            //  EMPTY ENTITY LIST
+            entityList.clear();
+
 
             //UI
             ui.draw(g2);
+
         }
 
 
@@ -215,3 +243,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 }
+
+/*The reason for having all the entities in an array is that, once we have them in an array, we can
+ * sort them with their worldY, and we can draw them in an order which look realistic
+ * IF YOU ARE STILL CONFUSED, I KNOW YOU ARE, WATCH "How to Make a 2D Game in Java #21" FROM RuiSnow*/
