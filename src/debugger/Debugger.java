@@ -8,4 +8,6 @@ public class Debugger {
     // Debug switch for checking solid area of the player
     public boolean solidAreaOfPlayerDebugSwitch = false;
 
+    public boolean playerInvincibilityChecker = false;
+
 }

@@ -4,9 +4,7 @@ import debugger.Debugger;
 import main.GamePanel;
 import main.KeyHandler;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
@@ -40,11 +38,11 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
 
-//        worldX = gp.tileSize * 23;
-//        worldY = gp.tileSize * 21;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
 
-        worldX = gp.tileSize * 10;
-        worldY = gp.tileSize * 13;
+//        worldX = gp.tileSize * 10;
+//        worldY = gp.tileSize * 13;
         speed = 4;
         direction = "down";
 
@@ -93,6 +91,7 @@ public class Player extends Entity {
 
             // CHECK MONSTER COLLISION
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            contactMonster(monsterIndex);
 
             // CHECK EVENT
             gp.eHandler.checkEvent();
@@ -123,6 +122,14 @@ public class Player extends Entity {
                 standCounter = 0;
             }
         }
+
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 60) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
 
     public void pickObject(int i) {
@@ -131,13 +138,25 @@ public class Player extends Entity {
         }
     }
 
-    public void interactNPC(int i){
+    public void interactNPC(int i) {
 
         if (i != 999) {
-            if (gp.keyH.enterPressed){
+            if (gp.keyH.enterPressed) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
             }
+        }
+
+    }
+
+    public void contactMonster(int i) {
+
+        if (i != 999) {
+            if (!invincible) {
+                life -= 1;
+                invincible = true;
+            }
+
         }
 
     }
@@ -181,11 +200,28 @@ public class Player extends Entity {
             }
         }
 
+        // This will make the player transparent when they are invincible (in the sense they just got hit)
+        if (invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F));
+        }
+
         g2.drawImage(image, screenX, screenY, null);
 
+        // Resetting the transparency back to normal
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
+
+        // TO CHECK THE SOLID AREA OF THE PLAYER
         if (debugger.solidAreaOfPlayerDebugSwitch) {
             g2.setColor(Color.red);
             g2.drawRect(screenX + solidArea.y, screenY + solidArea.y, solidArea.width, solidArea.height);
         }
+
+        // TO CHECK THE INVINCIBILITY OF THE PLAYER
+        if (debugger.playerInvincibilityChecker){
+            g2.setFont(new Font("Arial", Font.PLAIN, 26));
+            g2.setColor(Color.white);
+            g2.drawString("Invincible : " + invincibleCounter, 10, 400);
+        }
+
     }
 }
