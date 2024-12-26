@@ -1,12 +1,19 @@
 package main;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class UI {
 
+    private static final Logger logger = Logger.getLogger(UI.class.getName());
+
     GamePanel gp;
     Graphics2D g2;
-    Font arial_40, arial_60B;
+    Font purisaB, maruMonica;
 
     public boolean messageOn = false;
     public String message = "";
@@ -20,8 +27,26 @@ public class UI {
 
         this.gp = gp;
 
-        arial_40 = new Font("Arial", Font.PLAIN, 40);
-        arial_60B = new Font("Arial", Font.BOLD, 60);
+        try {
+
+            InputStream iS = getClass().getResourceAsStream("/font/Purisa Bold.ttf");
+            assert iS != null;
+            purisaB = Font.createFont(Font.TRUETYPE_FONT, iS);
+
+            iS = getClass().getResourceAsStream("/font/x12y16pxMaruMonica.ttf");
+            assert iS != null;
+            maruMonica = Font.createFont(Font.TRUETYPE_FONT, iS);
+
+        } catch (FontFormatException e) {
+
+            logger.log(Level.SEVERE, "Font " + maruMonica + "format not found");
+
+        } catch (IOException e) {
+
+            logger.log(Level.SEVERE, "The given font is not found");
+
+        }
+
 
     }
 
@@ -36,7 +61,7 @@ public class UI {
 
         this.g2 = g2;
 
-        g2.setFont(arial_40);
+        g2.setFont(maruMonica);
         g2.setColor(Color.white);
 
         // PLAY STATE
