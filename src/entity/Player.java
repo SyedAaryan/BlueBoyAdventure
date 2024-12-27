@@ -31,6 +31,11 @@ public class Player extends Entity {
         solidArea = new Rectangle(8, 16, 32, 32);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+        solidArea.width = 32;
+        solidArea.height = 32;
+
+        attackArea.width = 36;
+        attackArea.height = 36;
 
         setDefaultValues();
         getPlayerImage();
@@ -79,7 +84,10 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
+
+        if (attacking) {
+            attacking();
+        } else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
             if (keyH.upPressed) {
                 direction = "up";
             } else if (keyH.downPressed) {
@@ -146,6 +154,62 @@ public class Player extends Entity {
         }
     }
 
+    private void attacking() {
+
+        /*So what happens is that we show the 1st attacking image for 5 frames, then the second attacking
+         * image is shown for 25 frames, after that its back to image 1, so basically, 1 attack animation
+         * lasts for half a second */
+
+        spriteCounter++;
+
+        if (spriteCounter <= 5) {
+            spriteNum = 1;
+        }
+        if (spriteCounter > 5 && spriteCounter <= 25) {
+            spriteNum = 2;
+
+            /* When we are attacking, we need the solid area of the weapon and not the player, so we are
+             * storing the players solid area and his world x and y and temporarily focusing on the solid
+             * area of the weapon*/
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            // Adjust the players worldX/Y for the attack area
+            switch (direction) {
+                case "up" -> worldY -= attackArea.height;
+                case "down" -> worldY += attackArea.height;
+                case "left" -> worldX -= attackArea.width;
+                case "right" -> worldX += attackArea.width;
+            }
+
+            // Attack area becomes solid area
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            // Check monster collision with the updated worldX, worldY, and solidArea
+            /*So what happens here is that, we are checking if the attack area (this was explained above)
+            * collides with the monster, this is done using checkEntity(), if it is in fact a monster,
+            * we damage it using damageMonster()*/
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            damageMonster(monsterIndex);
+
+            // After checking collision, restore the original data
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+
+        }
+        if (spriteCounter > 25) {
+            spriteNum = 1;
+            standCounter = 0;
+            attacking = false;
+        }
+
+    }
+
     public void pickObject(int i) {
         if (i != 999) {
 
@@ -154,10 +218,12 @@ public class Player extends Entity {
 
     public void interactNPC(int i) {
 
-        if (i != 999) {
-            if (gp.keyH.enterPressed) {
+        if (keyH.enterPressed) {
+            if (i != 999) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
+            } else {
+                attacking = true;
             }
         }
 
@@ -175,41 +241,106 @@ public class Player extends Entity {
 
     }
 
+    public void damageMonster(int i){
+
+        if (i != 999){
+            System.out.println("HIT");
+        }
+        else{
+            System.out.println("MISS");
+        }
+
+    }
+
     public void draw(Graphics2D g2) {
 
         BufferedImage image = null;
 
+        int tempScreenX = screenX;
+        int tempScreenY = screenY;
+
+        // THIS IS WHERE WE DRAW IF THE PLAYER IS ATTACKING OR IN NORMAL STATE
         switch (direction) {
             case "up" -> {
-                if (spriteNum == 1) {
-                    image = up1;
+
+                if (!attacking) {
+                    if (spriteNum == 1) {
+                        image = up1;
+                    }
+                    if (spriteNum == 2) {
+                        image = up2;
+                    }
                 }
-                if (spriteNum == 2) {
-                    image = up2;
+
+                if (attacking) {
+                    tempScreenY = screenY - gp.tileSize;
+                    if (spriteNum == 1) {
+                        image = attackUp1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackUp2;
+                    }
                 }
+
             }
             case "down" -> {
-                if (spriteNum == 1) {
-                    image = down1;
+
+                if (!attacking) {
+                    if (spriteNum == 1) {
+                        image = down1;
+                    }
+                    if (spriteNum == 2) {
+                        image = down2;
+                    }
                 }
-                if (spriteNum == 2) {
-                    image = down2;
+
+                if (attacking) {
+                    if (spriteNum == 1) {
+                        image = attackDown1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackDown2;
+                    }
                 }
+
             }
             case "left" -> {
-                if (spriteNum == 1) {
-                    image = left1;
+                if (!attacking) {
+                    if (spriteNum == 1) {
+                        image = left1;
+                    }
+                    if (spriteNum == 2) {
+                        image = left2;
+                    }
                 }
-                if (spriteNum == 2) {
-                    image = left2;
+
+                if (attacking) {
+                    tempScreenX = screenX - gp.tileSize;
+                    if (spriteNum == 1) {
+                        image = attackLeft1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackLeft2;
+                    }
                 }
             }
             case "right" -> {
-                if (spriteNum == 1) {
-                    image = right1;
+                if (!attacking) {
+                    if (spriteNum == 1) {
+                        image = right1;
+                    }
+                    if (spriteNum == 2) {
+                        image = right2;
+                    }
                 }
-                if (spriteNum == 2) {
-                    image = right2;
+
+                if (attacking) {
+                    if (spriteNum == 1) {
+                        image = attackRight1;
+                    }
+                    if (spriteNum == 2) {
+                        image = attackRight2;
+                    }
                 }
             }
         }
@@ -219,7 +350,7 @@ public class Player extends Entity {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F));
         }
 
-        g2.drawImage(image, screenX, screenY, null);
+        g2.drawImage(image, tempScreenX, tempScreenY, null);
 
         // Resetting the transparency back to normal
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F));
