@@ -16,6 +16,9 @@ public class Player extends Entity {
 
     public int standCounter = 0;
 
+    // It means not attacking
+    public boolean attackCancelled = false;
+
     Debugger debugger = new Debugger();
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -129,6 +132,16 @@ public class Player extends Entity {
 
             }
 
+            if (keyH.enterPressed && !attackCancelled){
+
+                gp.playSE(7);
+                attacking = true;
+                spriteCounter = 0;
+
+            }
+
+            attackCancelled = false;
+
             gp.keyH.enterPressed = false;
 
             spriteCounter++;
@@ -220,11 +233,9 @@ public class Player extends Entity {
 
         if (keyH.enterPressed) {
             if (i != 999) {
+                attackCancelled = true;
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
-            } else {
-                    gp.playSE(7);
-                attacking = true;
             }
         }
 
@@ -292,7 +303,7 @@ public class Player extends Entity {
                     // TO CHECK THE ATTACK AREA
                     if (debugger.playerAttackDebugSwitch) {
                         g2.setColor(Color.red);
-                        g2.drawRect(tempScreenX + solidArea.x, tempScreenY + solidArea.y , attackArea.width, attackArea.height);
+                        g2.drawRect(tempScreenX + solidArea.x, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
                     }
                 }
 
@@ -346,7 +357,7 @@ public class Player extends Entity {
                     // TO CHECK THE ATTACK AREA
                     if (debugger.playerAttackDebugSwitch) {
                         g2.setColor(Color.red);
-                        g2.drawRect(tempScreenX + solidArea.x , tempScreenY + solidArea.y, attackArea.width, attackArea.height);
+                        g2.drawRect(tempScreenX + solidArea.x, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
                     }
                 }
             }
