@@ -3,6 +3,8 @@ package entity;
 import debugger.Debugger;
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -50,14 +52,31 @@ public class Player extends Entity {
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
 
-//        worldX = gp.tileSize * 10;
-//        worldY = gp.tileSize * 13;
         speed = 4;
         direction = "down";
 
         //PLAYER STATUS
+        level = 1;
         maxLife = 6;
         life = maxLife;
+        strength = 1; // The more strength he has, the damage he gives
+        dexterity = 1; // The more dexterity he has, the less damage he takes
+        exp = 0;
+        nextLevelExp = 5;
+        coin = 0;
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+        attack = getAttack(); // Total attack value is decided by strength and weapon
+        defense = getDefense(); // Total defense value is decided by dexterity and shield
+
+    }
+
+    public int getAttack() {
+        return attack = strength * currentWeapon.attackValue;
+    }
+
+    public int getDefense() {
+        return defense = dexterity * currentWeapon.defenseValue;
     }
 
     public void getPlayerImage() {
@@ -132,7 +151,7 @@ public class Player extends Entity {
 
             }
 
-            if (keyH.enterPressed && !attackCancelled){
+            if (keyH.enterPressed && !attackCancelled) {
 
                 gp.playSE(7);
                 attacking = true;
