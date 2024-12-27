@@ -190,8 +190,8 @@ public class Player extends Entity {
 
             // Check monster collision with the updated worldX, worldY, and solidArea
             /*So what happens here is that, we are checking if the attack area (this was explained above)
-            * collides with the monster, this is done using checkEntity(), if it is in fact a monster,
-            * we damage it using damageMonster()*/
+             * collides with the monster, this is done using checkEntity(), if it is in fact a monster,
+             * we damage it using damageMonster()*/
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex);
 
@@ -241,13 +241,17 @@ public class Player extends Entity {
 
     }
 
-    public void damageMonster(int i){
+    public void damageMonster(int i) {
 
-        if (i != 999){
-            System.out.println("HIT");
-        }
-        else{
-            System.out.println("MISS");
+        if (i != 999) {
+            if (!gp.monster[i].invincible) {
+                gp.monster[i].life -= 1;
+                gp.monster[i].invincible = true;
+
+                if (gp.monster[i].life <= 0) {
+                    gp.monster[i] = null;
+                }
+            }
         }
 
     }
@@ -280,6 +284,12 @@ public class Player extends Entity {
                     if (spriteNum == 2) {
                         image = attackUp2;
                     }
+
+                    // TO CHECK THE ATTACK AREA
+                    if (debugger.playerAttackDebugSwitch) {
+                        g2.setColor(Color.red);
+                        g2.drawRect(tempScreenX + solidArea.x, tempScreenY + solidArea.y , attackArea.width, attackArea.height);
+                    }
                 }
 
             }
@@ -300,6 +310,12 @@ public class Player extends Entity {
                     }
                     if (spriteNum == 2) {
                         image = attackDown2;
+                    }
+
+                    // TO CHECK THE ATTACK AREA
+                    if (debugger.playerAttackDebugSwitch) {
+                        g2.setColor(Color.red);
+                        g2.drawRect(tempScreenX + solidArea.x, tempScreenY + gp.tileSize, attackArea.width, attackArea.height);
                     }
                 }
 
@@ -322,6 +338,12 @@ public class Player extends Entity {
                     if (spriteNum == 2) {
                         image = attackLeft2;
                     }
+
+                    // TO CHECK THE ATTACK AREA
+                    if (debugger.playerAttackDebugSwitch) {
+                        g2.setColor(Color.red);
+                        g2.drawRect(tempScreenX + solidArea.x , tempScreenY + solidArea.y, attackArea.width, attackArea.height);
+                    }
                 }
             }
             case "right" -> {
@@ -340,6 +362,12 @@ public class Player extends Entity {
                     }
                     if (spriteNum == 2) {
                         image = attackRight2;
+                    }
+
+                    // TO CHECK THE ATTACK AREA
+                    if (debugger.playerAttackDebugSwitch) {
+                        g2.setColor(Color.red);
+                        g2.drawRect(tempScreenX + gp.tileSize, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
                     }
                 }
             }
