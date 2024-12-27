@@ -10,6 +10,6 @@ public class Debugger {
 
     public boolean playerInvincibilityChecker = false;
 
-    public boolean playerAttackDebugSwitch = true;
+    public boolean playerAttackDebugSwitch = false;
 
 }
