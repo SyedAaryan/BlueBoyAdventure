@@ -65,14 +65,14 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
             if (keyH.upPressed) {
                 direction = "up";
             } else if (keyH.downPressed) {
                 direction = "down";
             } else if (keyH.leftPressed) {
                 direction = "left";
-            } else {
+            } else if (keyH.rightPressed) {
                 direction = "right";
             }
 
@@ -96,10 +96,8 @@ public class Player extends Entity {
             // CHECK EVENT
             gp.eHandler.checkEvent();
 
-            gp.keyH.enterPressed = false;
-
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
-            if (!collisionOn) {
+            if (!collisionOn && !keyH.enterPressed) {
                 switch (direction) {
                     case "up" -> worldY -= speed;
                     case "down" -> worldY += speed;
@@ -108,6 +106,8 @@ public class Player extends Entity {
                 }
 
             }
+
+            gp.keyH.enterPressed = false;
 
             spriteCounter++;
             if (spriteCounter > 12) {
@@ -201,7 +201,7 @@ public class Player extends Entity {
         }
 
         // This will make the player transparent when they are invincible (in the sense they just got hit)
-        if (invincible){
+        if (invincible) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F));
         }
 
@@ -217,7 +217,7 @@ public class Player extends Entity {
         }
 
         // TO CHECK THE INVINCIBILITY OF THE PLAYER
-        if (debugger.playerInvincibilityChecker){
+        if (debugger.playerInvincibilityChecker) {
             g2.setFont(new Font("Arial", Font.PLAIN, 26));
             g2.setColor(Color.white);
             g2.drawString("Invincible : " + invincibleCounter, 10, 400);
