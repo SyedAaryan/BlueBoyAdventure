@@ -382,10 +382,25 @@ public class UI {
         final int slotYStart = frameY + 20;
         int slotX = slotXStart;
         int slotY = slotYStart;
+        int slotSize = gp.tileSize + 3;
+
+        // DRAW PLAYER ITEMS
+        for (int i = 0; i < gp.player.inventory.size(); i++) {
+
+            g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
+            slotX += slotSize;
+
+            // 4, 9, 14 because when index it that, it should go to the next row
+            if (i == 4 || i == 9 || i == 14) {
+                slotX = slotXStart;
+                slotY += slotSize;
+            }
+
+        }
 
         //CURSOR (by cursor, it is to select the things in the inventory)
-        int cursorX = slotXStart + (gp.tileSize * slotCol);
-        int cursorY = slotYStart + (gp.tileSize * slotRow);
+        int cursorX = slotXStart + (slotSize * slotCol);
+        int cursorY = slotYStart + (slotSize * slotRow);
         int cursorWidth = gp.tileSize;
         int cursorHeight = gp.tileSize;
 
