@@ -1,5 +1,6 @@
 package main;
 
+import debugger.Debugger;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -8,6 +9,8 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
 
     public boolean upPressed, downPressed, rightPressed, leftPressed, enterPressed;
+
+    Debugger debugger = new Debugger();
 
     public KeyHandler(GamePanel gp) {
 
@@ -112,6 +115,14 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             enterPressed = true;
         }
+
+        // Real time map updater
+        if(debugger.realTimeMapUpdater){
+            if (code == KeyEvent.VK_R) {
+                gp.tileM.loadMap("/maps/worldV2.txt");
+            }
+        }
+
     }
 
     public void pauseState(int code) {
