@@ -33,6 +33,11 @@ public class UI {
 
     public int commandNum = 0;
 
+    // For inventory
+    public int slotCol = 0;
+    public int slotRow = 0;
+
+
     public UI(GamePanel gp) {
 
         this.gp = gp;
@@ -103,6 +108,7 @@ public class UI {
         // CHARACTER STATE
         if (gp.gameState == gp.characterState) {
             drawCharacterScreen();
+            drawInventory();
         }
 
     }
@@ -151,7 +157,7 @@ public class UI {
 
                 // For shadow effect
                 g2.setColor(Color.black);
-                g2.drawString(message.get(i), messageX+2, messageY+2);
+                g2.drawString(message.get(i), messageX + 2, messageY + 2);
 
                 // For Actual text
                 g2.setColor(Color.white);
@@ -163,7 +169,7 @@ public class UI {
                 messageY += 50;
 
                 // 180 i,e i80 frames, meaning 3 seconds
-                if (messageCounter.get(i) > 180){
+                if (messageCounter.get(i) > 180) {
                     message.remove(i);
                     messageCounter.remove(i);
                 }
@@ -359,6 +365,38 @@ public class UI {
 
     }
 
+    // Method for inventory
+    public void drawInventory() {
+
+        //FRAME
+        int frameX = gp.tileSize * 9;
+        int frameY = gp.tileSize;
+        int frameWidth = gp.tileSize * 6;
+        int frameHeight = gp.tileSize * 5;
+
+        // Calling the subWindow frame
+        drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+        // SLOT
+        final int slotXStart = frameX + 20;
+        final int slotYStart = frameY + 20;
+        int slotX = slotXStart;
+        int slotY = slotYStart;
+
+        //CURSOR (by cursor, it is to select the things in the inventory)
+        int cursorX = slotXStart + (gp.tileSize * slotCol);
+        int cursorY = slotYStart + (gp.tileSize * slotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        // DRAW CURSOR (by cursor, it is to select the things in the inventory)
+        g2.setColor(Color.white);
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+
+    }
+
+    // Used to draw a subWindow, parameters are passed as X,Y,WIDTH,HEIGHT
     public void drawSubWindow(int x, int y, int width, int height) {
 
         // For the window

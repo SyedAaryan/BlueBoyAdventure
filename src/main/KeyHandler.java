@@ -1,6 +1,7 @@
 package main;
 
 import debugger.Debugger;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -117,7 +118,7 @@ public class KeyHandler implements KeyListener {
         }
 
         // Real time map updater
-        if(debugger.realTimeMapUpdater){
+        if (debugger.realTimeMapUpdater) {
             if (code == KeyEvent.VK_R) {
                 gp.tileM.loadMap("/maps/worldV2.txt");
             }
@@ -141,6 +142,27 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_C) {
             gp.gameState = gp.playState;
         }
+
+        if (code == KeyEvent.VK_W) {
+            gp.ui.slotRow--;
+            gp.playSE(9);
+        }
+
+        if (code == KeyEvent.VK_A) {
+            gp.ui.slotCol--;
+            gp.playSE(9);
+        }
+
+        if (code == KeyEvent.VK_S) {
+            gp.ui.slotRow++;
+            gp.playSE(9);
+        }
+
+        if (code == KeyEvent.VK_D) {
+            gp.ui.slotCol++;
+            gp.playSE(9);
+        }
+
     }
 
     @Override
