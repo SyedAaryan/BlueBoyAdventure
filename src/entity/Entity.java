@@ -111,11 +111,19 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
+        // when the monster contacts the player, it can damage if player is not invincible
         if (this.type == 2 && contactPlayer) {
             if (!gp.player.invincible) {
                 // WE CAN GIVE DAMAGE
                 gp.playSE(6);
-                gp.player.life -= 1;
+
+                // It calculates the players defense and monster attack and gives a "damage" value to the player
+                int damage = attack - gp.player.defense;
+                if (damage < 0) {
+                    damage = 0;
+                }
+
+                gp.player.life -= damage;
                 gp.player.invincible = true;
             }
         }

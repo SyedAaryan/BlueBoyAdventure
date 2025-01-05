@@ -76,7 +76,7 @@ public class Player extends Entity {
     }
 
     public int getDefense() {
-        return defense = dexterity * currentWeapon.defenseValue;
+        return defense = dexterity * currentShield.defenseValue;
     }
 
     public void getPlayerImage() {
@@ -265,7 +265,14 @@ public class Player extends Entity {
         if (i != 999) {
             if (!invincible) {
                 gp.playSE(6);
-                life -= 1;
+
+                // It calculates the players defense and monster attack and gives a "damage" value to the player
+                int damage = gp.monster[i].attack - defense;
+                if (damage < 0) {
+                    damage = 0;
+                }
+
+                life -= damage;
                 invincible = true;
             }
 
@@ -278,7 +285,13 @@ public class Player extends Entity {
         if (i != 999) {
             if (!gp.monster[i].invincible) {
                 gp.playSE(5);
-                gp.monster[i].life -= 1;
+
+                // It calculates the monster defense and player attack and gives a "damage" value
+                int damage = attack - gp.monster[i].defense;
+                if (damage < 0) {
+                    damage = 0;
+                }
+                gp.monster[i].life -= damage;
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
 
