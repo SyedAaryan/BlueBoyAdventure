@@ -409,6 +409,39 @@ public class UI {
         g2.setStroke(new BasicStroke(3));
         g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
 
+        // DESCRIPTION WINDOW
+        int dFrameX = frameX;
+        int dFrameY = frameY + frameHeight + gp.tileSize;
+        int dFrameWidth = frameWidth;
+        int dFrameHeight = gp.tileSize * 3;
+
+        drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+
+        // DESCRIPTION TEXT
+        int textX = dFrameX + 20;
+        int textY = dFrameY + gp.tileSize;
+        g2.setFont(g2.getFont().deriveFont(28F));
+
+        int itemIndex = getItemIndexOnSlot();
+
+        if (itemIndex < gp.player.inventory.size()) {
+
+            // For loop to basically split the line ifi "\n" comes in the sentence
+            for (String line : gp.player.inventory.get(itemIndex).description.split("\n")) {
+                g2.drawString(line, textX, textY);
+                textY += 32;
+            }
+
+        }
+
+    }
+
+    /*This basically returns the index of an element in a slot, it is done by calculating its slotCol
+     * and slotRow, lets say an element is at (2,4)[assume inventory is a 4x5 matrix], them, the slot will
+     * be at column 4 and row 2, thus 4 + (2 * 5 ) = 14 is the index*/
+    public int getItemIndexOnSlot() {
+        return slotCol + (slotRow * 5);
+        //For clearer explanation for this if needed watch ryi snow vid #27 24:30
     }
 
     // Used to draw a subWindow, parameters are passed as X,Y,WIDTH,HEIGHT
