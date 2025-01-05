@@ -305,8 +305,33 @@ public class Player extends Entity {
                     // shows if the killed is killed
                     gp.ui.addMessage("Killed the " + gp.monster[i].name);
 
+                    // Playing will get exp if he kills the monster
+                    gp.ui.addMessage("Exp + " + gp.monster[i].exp);
+                    exp += gp.monster[i].exp;
+
+                    // To check if the player leveled up
+                    checkLevelUp();
+
                 }
             }
+        }
+
+    }
+
+    public void checkLevelUp() {
+
+        if (exp >= nextLevelExp) {
+            level++;
+            nextLevelExp = nextLevelExp * 2;
+            maxLife += 2;
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defense = getDefense();
+
+            gp.playSE(8);
+            gp.gameState = gp.dialogueState;
+            gp.ui.currentDialogue = "You are Level " + level;
         }
 
     }

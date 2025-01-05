@@ -107,6 +107,9 @@ public class EventHandler {
             gp.ui.currentDialogue = "You drank the water \n You are fully recovered";
             gp.player.life = gp.player.maxLife;
 
+            // So when we heal, the monster will reset the below method spawns them
+            gp.aSetter.setMonster();
+
         }
 
     }
