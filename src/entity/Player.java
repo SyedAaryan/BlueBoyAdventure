@@ -413,9 +413,12 @@ public class Player extends Entity {
                 defense = getDefense();
             }
 
+            // Checking if the item is a consumable
+            if (selectedItem.type == type_consumable) {
 
-            if (selectedItem.type == type_shield) {
-                //LATER
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+
             }
 
         }
