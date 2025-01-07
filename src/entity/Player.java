@@ -259,7 +259,26 @@ public class Player extends Entity {
     }
 
     public void pickObject(int i) {
+
+        String text;
+
         if (i != 999) {
+
+            // Checking whether the inventory is full
+            if (inventory.size() != maxInventorySize) {
+
+                inventory.add(gp.obj[i]);
+                gp.playSE(1);
+                text = "Got a " + gp.obj[i].name + "!";
+
+            } else {
+                text = "Cant carry more items";
+            }
+
+            gp.ui.addMessage(text);
+
+            // This is imp as without this, the obj won't disappear
+            gp.obj[i] = null;
 
         }
     }

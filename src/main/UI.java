@@ -66,6 +66,7 @@ public class UI {
 
     }
 
+    // This will add the message in the arrayList
     public void addMessage(String text) {
 
         message.add(text);
@@ -144,6 +145,7 @@ public class UI {
 
     }
 
+    // This method will the message that was added by the addMessage() method
     public void drawMessage() {
 
         int messageX = gp.tileSize;
