@@ -108,16 +108,32 @@ public class Player extends Entity {
 
     }
 
+    // This method is used to set the attacking sprite of the player by checking the current weapon
     public void getPlayerAttackImage() {
 
-        attackUp1 = setup("/player/boy_attack_up_1", gp.tileSize, gp.tileSize * 2);
-        attackUp2 = setup("/player/boy_attack_up_2", gp.tileSize, gp.tileSize * 2);
-        attackDown1 = setup("/player/boy_attack_down_1", gp.tileSize, gp.tileSize * 2);
-        attackDown2 = setup("/player/boy_attack_down_2", gp.tileSize, gp.tileSize * 2);
-        attackLeft1 = setup("/player/boy_attack_left_1", gp.tileSize * 2, gp.tileSize);
-        attackLeft2 = setup("/player/boy_attack_left_2", gp.tileSize * 2, gp.tileSize);
-        attackRight1 = setup("/player/boy_attack_right_1", gp.tileSize * 2, gp.tileSize);
-        attackRight2 = setup("/player/boy_attack_right_2", gp.tileSize * 2, gp.tileSize);
+        // If the current weapon is a sword
+        if (currentWeapon.type == type_sword) {
+            attackUp1 = setup("/player/boy_attack_up_1", gp.tileSize, gp.tileSize * 2);
+            attackUp2 = setup("/player/boy_attack_up_2", gp.tileSize, gp.tileSize * 2);
+            attackDown1 = setup("/player/boy_attack_down_1", gp.tileSize, gp.tileSize * 2);
+            attackDown2 = setup("/player/boy_attack_down_2", gp.tileSize, gp.tileSize * 2);
+            attackLeft1 = setup("/player/boy_attack_left_1", gp.tileSize * 2, gp.tileSize);
+            attackLeft2 = setup("/player/boy_attack_left_2", gp.tileSize * 2, gp.tileSize);
+            attackRight1 = setup("/player/boy_attack_right_1", gp.tileSize * 2, gp.tileSize);
+            attackRight2 = setup("/player/boy_attack_right_2", gp.tileSize * 2, gp.tileSize);
+        }
+
+        // If the current weapon is an axe
+        if (currentWeapon.type == type_axe) {
+            attackUp1 = setup("/player/boy_axe_up_1", gp.tileSize, gp.tileSize * 2);
+            attackUp2 = setup("/player/boy_axe_up_2", gp.tileSize, gp.tileSize * 2);
+            attackDown1 = setup("/player/boy_axe_down_1", gp.tileSize, gp.tileSize * 2);
+            attackDown2 = setup("/player/boy_axe_down_2", gp.tileSize, gp.tileSize * 2);
+            attackLeft1 = setup("/player/boy_axe_left_1", gp.tileSize * 2, gp.tileSize);
+            attackLeft2 = setup("/player/boy_axe_left_2", gp.tileSize * 2, gp.tileSize);
+            attackRight1 = setup("/player/boy_axe_right_1", gp.tileSize * 2, gp.tileSize);
+            attackRight2 = setup("/player/boy_axe_right_2", gp.tileSize * 2, gp.tileSize);
+        }
 
     }
 
@@ -371,6 +387,7 @@ public class Player extends Entity {
 
     }
 
+    // This method will check for the selected item from the inventory
     public void selectItem() {
 
         int itemIndex = gp.ui.getItemIndexOnSlot();
@@ -385,6 +402,9 @@ public class Player extends Entity {
             if (selectedItem.type == type_axe || selectedItem.type == type_sword) {
                 currentWeapon = selectedItem;
                 attack = getAttack();
+
+                // When the item is changed the below method is called to change the animation
+                getPlayerAttackImage();
             }
 
             // Checking if the item is a shield and updating the defense
