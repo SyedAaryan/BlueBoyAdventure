@@ -415,8 +415,6 @@ public class UI {
         int dFrameWidth = frameWidth;
         int dFrameHeight = gp.tileSize * 3;
 
-        drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
-
         // DESCRIPTION TEXT
         int textX = dFrameX + 20;
         int textY = dFrameY + gp.tileSize;
@@ -425,6 +423,8 @@ public class UI {
         int itemIndex = getItemIndexOnSlot();
 
         if (itemIndex < gp.player.inventory.size()) {
+
+            drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
 
             // For loop to basically split the line ifi "\n" comes in the sentence
             for (String line : gp.player.inventory.get(itemIndex).description.split("\n")) {
