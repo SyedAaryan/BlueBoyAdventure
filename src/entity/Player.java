@@ -45,9 +45,6 @@ public class Player extends Entity {
         solidArea.width = 32;
         solidArea.height = 32;
 
-        attackArea.width = 36;
-        attackArea.height = 36;
-
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
@@ -88,6 +85,9 @@ public class Player extends Entity {
     }
 
     public int getAttack() {
+        // With this the players attack area will be updated depending on the weapon
+        attackArea = currentWeapon.attackArea;
+
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -367,6 +367,37 @@ public class Player extends Entity {
             gp.playSE(8);
             gp.gameState = gp.dialogueState;
             gp.ui.currentDialogue = "You are Level " + level;
+        }
+
+    }
+
+    public void selectItem() {
+
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        // This is to check if we are selecting an item and not an empty slot
+        if (itemIndex < inventory.size()) {
+
+            // Selected item will be of type "Entity"
+            Entity selectedItem = inventory.get(itemIndex);
+
+            //Checking if the item is a sword or an axe and updating the defense
+            if (selectedItem.type == type_axe || selectedItem.type == type_sword) {
+                currentWeapon = selectedItem;
+                attack = getAttack();
+            }
+
+            // Checking if the item is a shield and updating the defense
+            if (selectedItem.type == type_shield) {
+                currentShield = selectedItem;
+                defense = getDefense();
+            }
+
+
+            if (selectedItem.type == type_shield) {
+                //LATER
+            }
+
         }
 
     }

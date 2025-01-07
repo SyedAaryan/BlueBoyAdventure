@@ -4,6 +4,7 @@ import debugger.Debugger;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 public class KeyHandler implements KeyListener {
 
@@ -179,6 +180,10 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(9);
             }
 
+        }
+
+        if (code == KeyEvent.VK_ENTER) {
+            gp.player.selectItem();
         }
 
     }
