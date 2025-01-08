@@ -27,6 +27,20 @@ public class Projectile extends Entity {
     //This is used to updated whatever is happening to the entity
     public void update() {
 
+        // To check if the user is the player
+        if (user == gp.player) {
+
+            // To get the monster index
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            if (monsterIndex != 999) {
+                gp.player.damageMonster(monsterIndex, attack);
+                alive = false;
+            }
+
+        } else {
+            // NOTHING FOR NOW
+        }
+
         // To change the position (basically the movement of the projectile)
         switch (direction) {
             case "up" -> worldY -= speed;

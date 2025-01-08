@@ -277,7 +277,7 @@ public class Player extends Entity {
              * collides with the monster, this is done using checkEntity(), if it is in fact a monster,
              * we damage it using damageMonster()*/
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, attack);
 
             // After checking collision, restore the original data
             worldX = currentWorldX;
@@ -352,7 +352,8 @@ public class Player extends Entity {
 
     }
 
-    public void damageMonster(int i) {
+    // This method will damage monster
+    public void damageMonster(int i, int attack) {
 
         if (i != 999) {
             if (!gp.monster[i].invincible) {
