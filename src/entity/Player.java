@@ -314,7 +314,8 @@ public class Player extends Entity {
     public void contactMonster(int i) {
 
         if (i != 999) {
-            if (!invincible) {
+            //The player will take damage when he is not invincible and the monster is not dying
+            if (!invincible && !gp.monster[i].dying) {
                 gp.playSE(6);
 
                 // It calculates the players defense and monster attack and gives a "damage" value to the player

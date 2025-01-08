@@ -261,12 +261,14 @@ public class Entity {
 
     }
 
+    // The method that is called when a monster is killed
     private void dyingAnimation(Graphics2D g2) {
 
         dyingCounter++;
 
         int i = 5;
 
+        // So many if else's, this is basically to "Animate" the dying by reducing the opacity upto a certain frames
         if (dyingCounter <= i) {
             changeAlpha(g2, 0F);
         }
@@ -292,7 +294,6 @@ public class Entity {
             changeAlpha(g2, 1f);
         }
         if (dyingCounter > i * 8) {
-            dying = false;
             alive = false;
         }
 
