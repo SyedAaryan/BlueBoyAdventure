@@ -213,12 +213,14 @@ public class Player extends Entity {
         }
 
         // "projectile.alive" is to ensure that the player cant shoot another projectile when the 1st one is still alive
-        if (gp.keyH.shotKeyPressed || projectile.alive) {
+        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30) {
 
             projectile.set(worldX, worldY, direction, true, this);
 
             // ADD IT TO THE LIST
             gp.projectileList.add(projectile);
+
+            shotAvailableCounter = 0;
 
             gp.playSE(10);
         }
@@ -229,6 +231,10 @@ public class Player extends Entity {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
         }
     }
 
