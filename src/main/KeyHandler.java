@@ -2,6 +2,7 @@ package main;
 
 import debugger.Debugger;
 
+import java.awt.event.FocusAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.security.Key;
@@ -10,7 +11,7 @@ public class KeyHandler implements KeyListener {
 
     GamePanel gp;
 
-    public boolean upPressed, downPressed, rightPressed, leftPressed, enterPressed;
+    public boolean upPressed, downPressed, rightPressed, leftPressed, enterPressed, shotKeyPressed;
 
     Debugger debugger = new Debugger();
 
@@ -118,6 +119,10 @@ public class KeyHandler implements KeyListener {
             enterPressed = true;
         }
 
+        if (code == KeyEvent.VK_F) {
+            shotKeyPressed = true;
+        }
+
         // Real time map updater
         if (debugger.realTimeMapUpdater) {
             if (code == KeyEvent.VK_R) {
@@ -208,8 +213,8 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
 
-        if (code == KeyEvent.VK_ENTER) {
-            enterPressed = false;
+        if (code == KeyEvent.VK_F) {
+            shotKeyPressed = false;
         }
     }
 }

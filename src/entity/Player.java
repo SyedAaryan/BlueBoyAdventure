@@ -3,6 +3,7 @@ package entity;
 import debugger.Debugger;
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -53,6 +54,7 @@ public class Player extends Entity {
         setItems();
     }
 
+    //Default values of the player
     public void setDefaultValues() {
 
         worldX = gp.tileSize * 23;
@@ -72,6 +74,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // Total attack value is decided by strength and weapon
         defense = getDefense(); // Total defense value is decided by dexterity and shield
 
@@ -207,6 +210,17 @@ public class Player extends Entity {
                 spriteNum = 1;
                 standCounter = 0;
             }
+        }
+
+        // "projectile.alive" is to ensure that the player cant shoot another projectile when the 1st one is still alive
+        if (gp.keyH.shotKeyPressed || projectile.alive) {
+
+            projectile.set(worldX, worldY, direction, true, this);
+
+            // ADD IT TO THE LIST
+            gp.projectileList.add(projectile);
+
+            gp.playSE(10);
         }
 
         if (invincible) {
