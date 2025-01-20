@@ -1,7 +1,9 @@
 package main;
 
 import entity.Entity;
+import entity.Player;
 import object.OBJ_Heart;
+import object.OBJ_ManaCrystal;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,7 +22,7 @@ public class UI {
     Graphics2D g2;
     Font purisaB, maruMonica;
 
-    BufferedImage heart_full, heart_half, heart_blank;
+    BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank;
 
     public boolean messageOn = false;
 
@@ -63,6 +65,9 @@ public class UI {
         heart_full = heart.image;
         heart_half = heart.image2;
         heart_blank = heart.image3;
+        Entity crystal = new OBJ_ManaCrystal(gp);
+        crystal_full = crystal.image;
+        crystal_blank = crystal.image2;
 
     }
 
@@ -114,6 +119,7 @@ public class UI {
 
     }
 
+    // Draws the player life as well as mana
     public void drawPlayerLife() {
 
         int x = gp.tileSize / 2;
@@ -142,6 +148,25 @@ public class UI {
             x += gp.tileSize;
         }
 
+        // DRAW MAX MANA
+        x = (gp.tileSize / 2) - 5;
+        y = (int)(gp.tileSize * 1.5);
+        i = 0;
+        while (i < gp.player.maxMana) {
+            g2.drawImage(crystal_blank, x, y, null);
+            i++;
+            x += 35;
+        }
+
+        // DRAW CURRENT MANA
+        x = (gp.tileSize / 2) - 5;
+        y = (int)(gp.tileSize * 1.5);
+        i = 0;
+        while (i < gp.player.mana) {
+            g2.drawImage(crystal_full, x, y, null);
+            i++;
+            x += 35;
+        }
 
     }
 
