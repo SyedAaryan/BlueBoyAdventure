@@ -43,7 +43,7 @@ public class Projectile extends Entity {
 
             // To check if the entity is colliding with the player
             boolean contactPlayer = gp.cChecker.checkPlayer(this);
-            if (!gp.player.invincible && contactPlayer){
+            if (!gp.player.invincible && contactPlayer) {
                 damagePlayer(attack);
                 alive = false;
             }
@@ -76,6 +76,15 @@ public class Projectile extends Entity {
             spriteCounter = 0;
         }
 
+    }
+
+    public boolean hasResource(Entity user) {
+
+        return false;
+
+    }
+
+    public void subtractResource(Entity user) {
     }
 
 }

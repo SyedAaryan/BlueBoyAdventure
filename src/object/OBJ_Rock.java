@@ -8,7 +8,7 @@ public class OBJ_Rock extends Projectile {
 
     GamePanel gp;
 
-    public OBJ_Rock (GamePanel gp) {
+    public OBJ_Rock(GamePanel gp) {
 
         super(gp);
         this.gp = gp;
@@ -37,6 +37,18 @@ public class OBJ_Rock extends Projectile {
         right1 = setup("/projectile/rock_down_1", gp.tileSize, gp.tileSize);
         right2 = setup("/projectile/rock_down_1", gp.tileSize, gp.tileSize);
 
+    }
+
+    // To check if the player has enough ammo
+    public boolean hasResource(Entity user) {
+
+        return user.ammo >= useCost;
+
+    }
+
+    // To reduce the players ammo
+    public void subtractResource(Entity user) {
+        user.ammo -= useCost;
     }
 
 }

@@ -68,6 +68,7 @@ public class Player extends Entity {
         maxLife = 6;
         maxMana = 4;
         mana = maxMana;
+        ammo = 10;
         life = maxLife;
         strength = 1; // The more strength he has, the damage he gives
         dexterity = 1; // The more dexterity he has, the less damage he takes
@@ -215,9 +216,12 @@ public class Player extends Entity {
         }
 
         // "projectile.alive" is to ensure that the player cant shoot another projectile when the 1st one is still alive
-        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30) {
+        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30 && projectile.hasResource(this)) {
 
             projectile.set(worldX, worldY, direction, true, this);
+
+            // SUBTRACT MANA
+            projectile.subtractResource(this);
 
             // ADD IT TO THE LIST
             gp.projectileList.add(projectile);

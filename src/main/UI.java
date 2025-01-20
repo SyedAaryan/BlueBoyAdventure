@@ -150,7 +150,7 @@ public class UI {
 
         // DRAW MAX MANA
         x = (gp.tileSize / 2) - 5;
-        y = (int)(gp.tileSize * 1.5);
+        y = (int) (gp.tileSize * 1.5);
         i = 0;
         while (i < gp.player.maxMana) {
             g2.drawImage(crystal_blank, x, y, null);
@@ -160,7 +160,7 @@ public class UI {
 
         // DRAW CURRENT MANA
         x = (gp.tileSize / 2) - 5;
-        y = (int)(gp.tileSize * 1.5);
+        y = (int) (gp.tileSize * 1.5);
         i = 0;
         while (i < gp.player.mana) {
             g2.drawImage(crystal_full, x, y, null);
@@ -323,6 +323,9 @@ public class UI {
         g2.drawString("Life", textX, textY);
         textY += lineHeight;
 
+        g2.drawString("Mana", textX, textY);
+        textY += lineHeight;
+
         g2.drawString("Strength", textX, textY);
         textY += lineHeight;
 
@@ -342,7 +345,7 @@ public class UI {
         textY += lineHeight;
 
         g2.drawString("Coin", textX, textY);
-        textY += lineHeight + 20;
+        textY += lineHeight + 10;
 
         g2.drawString("Weapon", textX, textY);
         textY += lineHeight + 15;
@@ -357,6 +360,9 @@ public class UI {
         textY += lineHeight;
 
         characterScreenValues(gp.player.life + "/" + gp.player.maxLife, tailX, textY);
+        textY += lineHeight;
+
+        characterScreenValues(gp.player.mana + "/" + gp.player.maxMana, tailX, textY);
         textY += lineHeight;
 
         characterScreenValues(String.valueOf(gp.player.strength), tailX, textY);
@@ -381,10 +387,10 @@ public class UI {
         textY += lineHeight;
 
         // TO DISPLAY THE IMAGES OF WEAPON AND SHIELD
-        g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY - 14, null);
+        g2.drawImage(gp.player.currentWeapon.down1, tailX - gp.tileSize, textY - 24, null);
         textY += gp.tileSize;
 
-        g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY - 14, null);
+        g2.drawImage(gp.player.currentShield.down1, tailX - gp.tileSize, textY - 24, null);
 
         /*So basically what happens is first the names get rendered, i,e the level, life etc., once that's done
          * we reset the textY value and move the alignment of the text towards the right and render tha value of
