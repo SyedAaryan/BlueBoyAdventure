@@ -37,8 +37,17 @@ public class Projectile extends Entity {
                 alive = false;
             }
 
-        } else {
-            // NOTHING FOR NOW
+        }
+
+        if (user != gp.player) {
+
+            // To check if the entity is colliding with the player
+            boolean contactPlayer = gp.cChecker.checkPlayer(this);
+            if (!gp.player.invincible && contactPlayer){
+                damagePlayer(attack);
+                alive = false;
+            }
+
         }
 
         // To change the position (basically the movement of the projectile)
