@@ -4,6 +4,7 @@ import debugger.Debugger;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
+import tile_interactive.InteractiveTile;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -48,6 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity[] obj = new Entity[20];
     public Entity[] npc = new Entity[10];
     public Entity[] monster = new Entity[20];
+    public InteractiveTile[] iTile = new InteractiveTile[50];
     public ArrayList<Entity> projectileList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
@@ -74,6 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
+        aSetter.setInteractiveTile();
 
         gameState = titleState;
 
@@ -157,6 +160,13 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            // INTERACTIVE TILES
+            for (int i = 0; i < iTile.length; i++) {
+                if (iTile[i] != null) {
+                    iTile[i].update();
+                }
+            }
+
         }
         if (gameState == pauseState) {
             //NOTHING FOR NOW
@@ -186,6 +196,13 @@ public class GamePanel extends JPanel implements Runnable {
 
             //THE TILES
             tileM.draw(g2);
+
+            //INTERACTIVE TILES
+            for (int i = 0; i < iTile.length; i++) {
+                if (iTile[i] != null) {
+                    iTile[i].draw(g2);
+                }
+            }
 
             // IF YOU'RE CONFUSED ABOUT WHY THIS IS BEING DONE, GO TO THE END OF THIS FILE
             // ADD ENTITIES TO THE LIST
