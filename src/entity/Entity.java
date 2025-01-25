@@ -4,10 +4,10 @@ import main.GamePanel;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.EmptyStackException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -137,6 +137,44 @@ public class Entity {
                 // The break is important, if we don't add it the above lines will be executed in all empty slots
             }
         }
+
+    }
+
+    public Color getParticleColor() {
+        return null;
+    }
+
+    public int getParticleSize() {
+        return 0;
+    }
+
+    public int getParticleSpeed() {
+        return 0;
+    }
+
+    public int getParticleMaxLife() {
+        return 0;
+    }
+
+    public void generateParticle(Entity generator, Entity target) {
+
+        Color color = generator.getParticleColor();
+        int size = generator.getParticleSize();
+        int speed = generator.getParticleSpeed();
+        int maxLife = generator.getParticleMaxLife();
+
+        // Creating the particle
+        // We are making 4 particles to give the "effect", in 4 different directions
+        Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -2, -1);//it goes top left
+        Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 2, -1);// it goes top right
+        Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -2, 1);// it goes down left
+        Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 2, 1);// it goes down right
+
+        //Adding the particle in the particleList
+        gp.particleList.add(p1);
+        gp.particleList.add(p2);
+        gp.particleList.add(p3);
+        gp.particleList.add(p4);
 
     }
 
