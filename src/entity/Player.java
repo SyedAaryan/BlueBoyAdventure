@@ -242,6 +242,14 @@ public class Player extends Entity {
         if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
         }
+
+        if (life > maxLife) {
+            life = maxLife;
+        }
+
+        if (mana > maxMana) {
+            mana = maxMana;
+        }
     }
 
     private void attacking() {
@@ -302,25 +310,35 @@ public class Player extends Entity {
 
     public void pickObject(int i) {
 
-        String text;
-
         if (i != 999) {
 
-            // Checking whether the inventory is full
-            if (inventory.size() != maxInventorySize) {
-
-                inventory.add(gp.obj[i]);
-                gp.playSE(1);
-                text = "Got a " + gp.obj[i].name + "!";
-
-            } else {
-                text = "Cant carry more items";
+            //PICKUP ONLY ITEMS
+            if (gp.obj[i].type == type_pickupOnly) {
+                gp.obj[i].use(this);
+                gp.obj[i] = null;
             }
 
-            gp.ui.addMessage(text);
+            // INVENTORY ITEMS
+            else {
+                String text;
 
-            // This is imp as without this, the obj won't disappear
-            gp.obj[i] = null;
+                // Checking whether the inventory is full
+                if (inventory.size() != maxInventorySize) {
+
+                    inventory.add(gp.obj[i]);
+                    gp.playSE(1);
+                    text = "Got a " + gp.obj[i].name + "!";
+
+                } else {
+                    text = "Cant carry more items";
+                }
+
+                gp.ui.addMessage(text);
+
+                // This is imp as without this, the obj won't disappear
+                gp.obj[i] = null;
+
+            }
 
         }
     }

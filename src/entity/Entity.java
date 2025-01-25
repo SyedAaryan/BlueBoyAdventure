@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -69,6 +70,7 @@ public class Entity {
     public Projectile projectile;
 
     // ITEM ATTRIBUTES
+    public int value;
     public int attackValue;
     public int defenseValue;
     public String description = "";
@@ -83,6 +85,7 @@ public class Entity {
     public final int type_axe = 4;
     public final int type_shield = 5;
     public final int type_consumable = 6;
+    public final int type_pickupOnly = 7;
 
 
     public Entity(GamePanel gp) {
@@ -117,6 +120,24 @@ public class Entity {
     }
 
     public void use(Entity entity) {
+    }
+
+    public void checkDrop() {
+    }
+
+    public void dropItem(Entity droppedItem) {
+
+        for (int i = 0; i < gp.obj.length; i++) {
+            //null cause the monster is dead, and it is removed from the array
+            if (gp.obj[i] == null) {
+                gp.obj[i] = droppedItem;
+                gp.obj[i].worldX = worldX;
+                gp.obj[i].worldY = worldY;
+                break;
+                // The break is important, if we don't add it the above lines will be executed in all empty slots
+            }
+        }
+
     }
 
     public void update() {
@@ -269,7 +290,7 @@ public class Entity {
                 dyingAnimation(g2);
             }
 
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, screenX, screenY, null);
 
             changeAlpha(g2, 1F);
         }

@@ -2,6 +2,9 @@ package monster;
 
 import entity.Entity;
 import main.GamePanel;
+import object.OBJ_Coin_Bronze;
+import object.OBJ_Heart;
+import object.OBJ_ManaCrystal;
 import object.OBJ_Rock;
 
 import java.util.Random;
@@ -94,6 +97,28 @@ public class MON_GreenSlime extends Entity {
 
         actionLockCounter = 0;
         direction = gp.player.direction;
+
+    }
+
+    // This is called when the monster dies to check if it drops something
+    public void checkDrop() {
+
+        // Cast a die
+        int i = new Random().nextInt(100) + 1;
+
+        //Setting the monsters drop
+        // The dropping will occur randomly
+        if (i < 50) {
+            dropItem(new OBJ_Coin_Bronze(gp));
+        }
+
+        if (i >= 50 && i < 75) {
+            dropItem(new OBJ_Heart(gp));
+        }
+
+        if (i >= 75) {
+            dropItem(new OBJ_ManaCrystal(gp));
+        }
 
     }
 
