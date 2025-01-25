@@ -14,7 +14,28 @@ public class InteractiveTile extends Entity {
         this.gp = gp;
     }
 
+    public boolean isCorrectItem(Entity entity) {
+        return false;
+    }
+
+    public void playSE() {
+    }
+
+    public InteractiveTile getDestroyedForm() {
+
+        return null;
+
+    }
+
     public void update() {
+
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 20) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
 
     }
 
