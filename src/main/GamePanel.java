@@ -8,7 +8,7 @@ import tile_interactive.InteractiveTile;
 
 import javax.swing.JPanel;
 import java.awt.*;
-import java.sql.Array;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -19,14 +19,20 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     public final int tileSize = originalTileSize * scale; // 48 x 48 tile
-    public final int maxScreenCol = 16;
+    public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+    public final int screenWidth = tileSize * maxScreenCol; // 960 pixels
     public final int screenHeight = tileSize * maxScreenRow; //576 pixels
 
     //WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
+
+    //FOR FULL SCREEN
+    int screenWidth2 = screenWidth;
+    int screenHeight2 = screenHeight;
+    BufferedImage tempScreen;
+    Graphics2D g2;
 
     // FPS
     int FPS = 60;
@@ -82,6 +88,25 @@ public class GamePanel extends JPanel implements Runnable {
 
         gameState = titleState;
 
+        // If u want to know what this is, look at the end of this file
+        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) tempScreen.getGraphics();
+
+        setFullScreen();
+
+    }
+
+    public void setFullScreen() {
+
+        // GET LOCAL DEVICE'S LOCAL SCREEN INFORMATION
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        gd.setFullScreenWindow(Main.window);
+
+        // GET FULL SCREEN WIDTH AND HEIGHT
+        screenWidth2 = Main.window.getWidth();
+        screenHeight2 = Main.window.getHeight();
+
     }
 
     public void startGameThread() {
@@ -112,7 +137,8 @@ public class GamePanel extends JPanel implements Runnable {
             if (delta >= 1) {
 
                 update();
-                repaint();
+                drawToTempScreen(); // draw everything to the buffered image
+                drawToScreen(); // draw the buffered image to the screen
                 delta--;
                 drawCount++;
 
@@ -188,11 +214,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
-    public void paintComponent(Graphics g) {
-
-        super.paintComponent(g);
-
-        Graphics2D g2 = (Graphics2D) g;
+    public void drawToTempScreen() {
 
         //DEBUG
         long drawStart = 0;
@@ -315,8 +337,6 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("Draw Time " + passed, x, y);
         }
 
-        g2.dispose();
-
     }
 
     public void playMusic(int i) {
@@ -333,6 +353,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+    public void drawToScreen() {
+        Graphics g = getGraphics();
+        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
+        g.dispose();
+    }
+
     // SE = Sound Effect
     public void playSE(int i) {
 
@@ -346,3 +372,9 @@ public class GamePanel extends JPanel implements Runnable {
 /*The reason for having all the entities in an array is that, once we have them in an array, we can
  * sort them with their worldY, and we can draw them in an order which look realistic
  * IF YOU ARE STILL CONFUSED, I KNOW YOU ARE, WATCH "How to Make a 2D Game in Java #21" FROM RuiSnow*/
+
+
+/*Regarding the temp screen, when we want to make the game work in a full screen, earlier we would just draw it
+ * now, we draw everything in a temp screen, and then resize it, this is done cause if we resize everything manually,
+ * it'll be very bad, and this method is heavier in terms of performance than the previous one
+ * IF YOU ARE STILL CONFUSED, I KNOW YOU ARE, WATCH "How to Make a 2D Game in Java #34" FROM RuiSnow*/

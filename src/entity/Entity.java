@@ -165,10 +165,10 @@ public class Entity {
 
         // Creating the particle
         // We are making 4 particles to give the "effect", in 4 different directions
-        Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -2, -1);//it goes top left
-        Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 2, -1);// it goes top right
-        Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -2, 1);// it goes down left
-        Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 2, 1);// it goes down right
+        Particle p1 = new Particle(gp, target, color, size, speed, maxLife, -2, -1);//it goes top left
+        Particle p2 = new Particle(gp, target, color, size, speed, maxLife, 2, -1);// it goes top right
+        Particle p3 = new Particle(gp, target, color, size, speed, maxLife, -2, 1);// it goes down left
+        Particle p4 = new Particle(gp, target, color, size, speed, maxLife, 2, 1);// it goes down right
 
         //Adding the particle in the particleList
         gp.particleList.add(p1);
