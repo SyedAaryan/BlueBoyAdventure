@@ -4,6 +4,8 @@ import entity.Entity;
 import entity.Projectile;
 import main.GamePanel;
 
+import java.awt.*;
+
 public class OBJ_Fireball extends Projectile {
 
     GamePanel gp;
@@ -49,6 +51,22 @@ public class OBJ_Fireball extends Projectile {
     // To reduce the players mana
     public void subtractResource(Entity user) {
         user.mana -= useCost;
+    }
+
+    public Color getParticleColor() {
+        return new Color(240, 50, 0);
+    }
+
+    public int getParticleSize(){
+        return 10; // 6 pixels
+    }
+
+    public int getParticleSpeed(){
+        return 1; // speed
+    }
+
+    public int getParticleMaxLife(){
+        return 20;
     }
 
 }
