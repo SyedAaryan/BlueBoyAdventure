@@ -1,7 +1,6 @@
 package main;
 
 import entity.Entity;
-import entity.Player;
 import object.OBJ_Heart;
 import object.OBJ_ManaCrystal;
 
@@ -11,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
+import java.util.PropertyPermission;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -38,6 +38,8 @@ public class UI {
     // For inventory
     public int slotCol = 0;
     public int slotRow = 0;
+
+    int subState = 0;
 
 
     public UI(GamePanel gp) {
@@ -115,6 +117,11 @@ public class UI {
         if (gp.gameState == gp.characterState) {
             drawCharacterScreen();
             drawInventory();
+        }
+
+        // OPTION STATE
+        if (gp.gameState == gp.optionsState) {
+            drawOptionsScreen();
         }
 
     }
@@ -471,6 +478,87 @@ public class UI {
                 textY += 32;
             }
 
+        }
+
+    }
+
+    // Method for drawing the option screen
+    public void drawOptionsScreen() {
+
+        // Setting the color and font
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(32F));
+
+        // SUB WINDOW
+        int frameX = gp.tileSize * 6;
+        int frameY = gp.tileSize;
+        int width = gp.tileSize * 8;
+        int height = gp.tileSize * 10;
+        drawSubWindow(frameX, frameY, width, height);
+
+        switch (subState) {
+            case 0:
+                options_top(frameX, frameY);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+
+    }
+
+    public void options_top(int frameX, int frameY) {
+
+        int textX;
+        int textY;
+
+        String text = "Options";
+        textX = getXForCenteredText(text);
+        textY = frameY + gp.tileSize;
+        g2.drawString(text, textX, textY);
+
+        // FULL SCREEN ON OFF
+        textX = frameX + gp.tileSize;
+        textY += gp.tileSize * 2;
+        g2.drawString("Full Screen", textX, textY);
+        if (commandNum == 0) {
+            g2.drawString(">", textX - 25, textY);
+        }
+
+        //MUSIC
+        textY += gp.tileSize;
+        g2.drawString("Music", textX, textY);
+        if (commandNum == 1) {
+            g2.drawString(">", textX - 25, textY);
+        }
+
+        //SE
+        textY += gp.tileSize;
+        g2.drawString("SE", textX, textY);
+        if (commandNum == 2) {
+            g2.drawString(">", textX - 25, textY);
+        }
+
+        //CONTROL
+        textY += gp.tileSize;
+        g2.drawString("Control", textX, textY);
+        if (commandNum == 3) {
+            g2.drawString(">", textX - 25, textY);
+        }
+
+        //END GAME
+        textY += gp.tileSize;
+        g2.drawString("End Game", textX, textY);
+        if (commandNum == 4) {
+            g2.drawString(">", textX - 25, textY);
+        }
+
+        //BACK
+        textY += gp.tileSize * 2;
+        g2.drawString("Back", textX, textY);
+        if (commandNum == 5) {
+            g2.drawString(">", textX - 25, textY);
         }
 
     }
