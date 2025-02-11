@@ -18,7 +18,4 @@ public class Debugger {
     // TODO: It doesnt work for reason
     public boolean realTimeMapUpdater = false;
 
-    // To make the game full screen
-    public boolean fullScreenMode = false;
-
 }

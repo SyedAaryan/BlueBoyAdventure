@@ -19,9 +19,7 @@ public class Main {
         window.setResizable(false);
         window.setTitle("2D Adventure Game ");
 
-        if (debugger.fullScreenMode) {
-            window.setUndecorated(true);
-        }
+//        window.setUndecorated(true);
 
 
         GamePanel gamePanel = new GamePanel();

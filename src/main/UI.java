@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
-import java.util.PropertyPermission;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -501,10 +500,14 @@ public class UI {
                 options_top(frameX, frameY);
                 break;
             case 1:
+                optionsFullScreenNotification(frameX, frameY);
                 break;
             case 2:
                 break;
         }
+
+        // This is imp as without this, enter key pressed will be pressed
+        gp.keyH.enterPressed = false;
 
     }
 
@@ -524,6 +527,15 @@ public class UI {
         g2.drawString("Full Screen", textX, textY);
         if (commandNum == 0) {
             g2.drawString(">", textX - 25, textY);
+            // Clicking on the full screen checkbox
+            if (gp.keyH.enterPressed) {
+                if (!gp.fullScreenOn) {
+                    gp.fullScreenOn = true;
+                } else {
+                    gp.fullScreenOn = false;
+                }
+                subState = 1;
+            }
         }
 
         //MUSIC
@@ -559,6 +571,49 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (commandNum == 5) {
             g2.drawString(">", textX - 25, textY);
+        }
+
+        //FULL SCREEN CHECK BOX
+        textX = frameX + (int) (gp.tileSize * 4.5);
+        textY = frameY + gp.tileSize * 2 + 24;
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRect(textX, textY, 24, 24);
+        if (gp.fullScreenOn) {
+            g2.fillRect(textX, textY, 24, 24);
+        }
+
+        // MUSIC VOLUME
+        textY += gp.tileSize;
+        g2.drawRect(textX, textY, 120, 24);
+
+        // SE VOLUME
+        textY += gp.tileSize;
+        g2.drawRect(textX, textY, 120, 24);
+
+    }
+
+    // when the subState is 1, this function will be called, which will notify the user the respective message
+    public void optionsFullScreenNotification(int frameX, int frameY) {
+
+        int textX = frameX + gp.tileSize;
+        int textY = frameY + gp.tileSize * 3;
+
+        currentDialogue = "The change will take \neffect after restarting \nthe game.";
+
+        for (String line : currentDialogue.split("\n")) {
+            g2.drawString(line, textX, textY);
+            textY += 40;
+        }
+
+        // BACK
+        // This is for back option, when enter is pressed, it'll go back to the menu
+        textY = frameY + gp.tileSize * 9;
+        g2.drawString("Back", textX, textY);
+        if (commandNum == 0) {
+            g2.drawString(">", textX - 25, textY);
+            if (gp.keyH.enterPressed) {
+                subState = 0;
+            }
         }
 
     }

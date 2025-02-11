@@ -29,6 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
 
     //FOR FULL SCREEN
+    public boolean fullScreenOn = false;
     int screenWidth2 = screenWidth;
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
@@ -93,9 +94,7 @@ public class GamePanel extends JPanel implements Runnable {
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
 
-        if (debugger.fullScreenMode) {
-            setFullScreen();
-        }
+//        setFullScreen();
 
     }
 
