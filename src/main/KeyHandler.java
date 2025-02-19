@@ -202,6 +202,7 @@ public class KeyHandler implements KeyListener {
 
     }
 
+    // When "Esc" key is pressed, it goes into this state
     public void optionState(int code) {
 
         if (code == KeyEvent.VK_ESCAPE) {
@@ -231,6 +232,42 @@ public class KeyHandler implements KeyListener {
             gp.playSE(9);
             if (gp.ui.commandNum > maxCommandNum) {
                 gp.ui.commandNum = 0;
+            }
+        }
+
+        // To decrease the effect
+        if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
+            if (gp.ui.subState == 0) {
+                // Checking if the cursor is on the music setting, this is done by checking commandNum ==1; which means it is on music option
+                if (gp.ui.commandNum == 1 && gp.music.volumeScale > 0) {
+                    gp.music.volumeScale--;
+                    gp.music.checkVolume();
+                    gp.playSE(9);
+                }
+
+                // Checking if the cursor is on the sound effect(se) setting, this is done by checking commandNum ==2; which means it is on se option
+                if (gp.ui.commandNum == 2 && gp.se.volumeScale > 0) {
+                    gp.se.volumeScale--;
+                    gp.playSE(9);
+                }
+            }
+        }
+
+        // To increase the effect
+        if (code == KeyEvent.VK_D || code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.subState == 0) {
+                // Checking if the cursor is on the music setting, this is done by checking commandNum ==1; which means it is on music option
+                if (gp.ui.commandNum == 1 && gp.music.volumeScale < 5) {
+                    gp.music.volumeScale++;
+                    gp.music.checkVolume();
+                    gp.playSE(9);
+                }
+
+                // Checking if the cursor is on the se setting, this is done by checking commandNum ==2; which means it is on se option
+                if (gp.ui.commandNum == 2 && gp.se.volumeScale < 5) {
+                    gp.se.volumeScale++;
+                    gp.playSE(9);
+                }
             }
         }
 

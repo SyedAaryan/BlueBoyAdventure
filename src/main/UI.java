@@ -554,7 +554,7 @@ public class UI {
 
         //CONTROL
         textY += gp.tileSize;
-        g2.drawString("Control", textX, textY);
+        g2.drawString("Controls", textX, textY);
         if (commandNum == 3) {
             g2.drawString(">", textX - 25, textY);
         }
@@ -584,11 +584,17 @@ public class UI {
 
         // MUSIC VOLUME
         textY += gp.tileSize;
-        g2.drawRect(textX, textY, 120, 24);
+        g2.drawRect(textX, textY, 120, 24); // 120/5 = 24
+        int volumeWidth = 24 * gp.music.volumeScale;
+        // We are basically adding another rect, which shows the volume
+        g2.fillRect(textX, textY, volumeWidth, 24);
 
         // SE VOLUME
         textY += gp.tileSize;
         g2.drawRect(textX, textY, 120, 24);
+        volumeWidth = 24 * gp.se.volumeScale;
+        // We are basically adding another rect, which shows the volume
+        g2.fillRect(textX, textY, volumeWidth, 24);
 
     }
 
