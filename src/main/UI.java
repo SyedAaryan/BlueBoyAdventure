@@ -583,6 +583,10 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (commandNum == 5) {
             g2.drawString(">", textX - 25, textY);
+            if (gp.keyH.enterPressed) {
+                gp.gameState = gp.playState;
+                commandNum = 0;
+            }
         }
 
         //FULL SCREEN CHECK BOX
