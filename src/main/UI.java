@@ -612,6 +612,9 @@ public class UI {
         // We are basically adding another rect, which shows the volume
         g2.fillRect(textX, textY, volumeWidth, 24);
 
+        // Saving the details in the config file
+        gp.config.saveConfig();
+
     }
 
     // when the subState is 1, this function will be called, which will notify the user the respective message
