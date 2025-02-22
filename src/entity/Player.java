@@ -250,6 +250,12 @@ public class Player extends Entity {
         if (mana > maxMana) {
             mana = maxMana;
         }
+
+        // Checking if the play has no life, if he doesn't, game ends
+        if (life <= 0){
+            gp.gameState = gp.gameOverState;
+        }
+
     }
 
     private void attacking() {
