@@ -80,8 +80,26 @@ public class Player extends Entity {
 
     }
 
+    // When the player dies
+    public void setDefaultPosition(){
+
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
+        direction = "down";
+
+    }
+
+    public void restoreLifeAndMana(){
+        life = maxLife;
+        mana = maxMana;
+        invincible = false;
+    }
+
     // To set the inventory items
     public void setItems() {
+
+        // Inventory.clear will clear all items, and then the default shield and sword will only be there
+        inventory.clear();
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
@@ -254,6 +272,7 @@ public class Player extends Entity {
         // Checking if the play has no life, if he doesn't, game ends
         if (life <= 0){
             gp.gameState = gp.gameOverState;
+            gp.playSE(12);
         }
 
     }

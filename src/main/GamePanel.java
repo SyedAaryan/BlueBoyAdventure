@@ -102,6 +102,27 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+    public void retry() {
+
+        player.setDefaultValues();
+        player.restoreLifeAndMana();
+        aSetter.setNPC();
+        aSetter.setMonster();
+
+    }
+
+    public void restart() {
+
+        player.setDefaultValues();
+        player.setDefaultPosition();
+        player.restoreLifeAndMana();
+        player.setItems();
+        aSetter.setNPC();
+        aSetter.setMonster();
+        aSetter.setInteractiveTile();
+
+    }
+
     public void setFullScreen() {
 
         // GET LOCAL DEVICE'S LOCAL SCREEN INFORMATION

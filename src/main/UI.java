@@ -515,6 +515,7 @@ public class UI {
         text = "Retry";
         x = getXForCenteredText(text);
         y += gp.tileSize * 4;
+        g2.drawString(text, x, y);
         if (commandNum == 0) {
             g2.drawString(">", x - 40, y);
         }
