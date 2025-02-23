@@ -81,7 +81,7 @@ public class Player extends Entity {
     }
 
     // When the player dies
-    public void setDefaultPosition(){
+    public void setDefaultPosition() {
 
         worldX = gp.tileSize * 23;
         worldY = gp.tileSize * 21;
@@ -89,7 +89,7 @@ public class Player extends Entity {
 
     }
 
-    public void restoreLifeAndMana(){
+    public void restoreLifeAndMana() {
         life = maxLife;
         mana = maxMana;
         invincible = false;
@@ -270,8 +270,10 @@ public class Player extends Entity {
         }
 
         // Checking if the play has no life, if he doesn't, game ends
-        if (life <= 0){
+        if (life <= 0) {
             gp.gameState = gp.gameOverState;
+            gp.ui.commandNum = -1;
+            gp.stopMusic();
             gp.playSE(12);
         }
 
