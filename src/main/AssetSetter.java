@@ -62,6 +62,12 @@ public class AssetSetter {
         gp.npc[mapNum][0].worldX = gp.tileSize * 21;
         gp.npc[mapNum][0].worldY = gp.tileSize * 21;
 
+        mapNum = 1;
+        gp.npc[mapNum][0] = new NPC_OldMan(gp);
+        gp.npc[mapNum][0].worldX = gp.tileSize * 12;
+        gp.npc[mapNum][0].worldY = gp.tileSize * 7;
+
+
     }
 
     // Check the EOF for MapNum
