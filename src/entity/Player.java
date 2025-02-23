@@ -54,8 +54,11 @@ public class Player extends Entity {
     //Default values of the player
     public void setDefaultValues() {
 
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+//        worldX = gp.tileSize * 23;
+//        worldY = gp.tileSize * 21;
+
+        worldX = gp.tileSize * 12;
+        worldY = gp.tileSize * 13;
 
         speed = 4;
         direction = "down";
@@ -176,7 +179,9 @@ public class Player extends Entity {
 
             // CHECK TILE COLLISION
             collisionOn = false;
-            gp.cChecker.checkTile(this);
+            if (!debugger.playerGodMode) {
+                gp.cChecker.checkTile(this);
+            }
 
             // CHECK OBJECT COLLISION
             int objIndex = gp.cChecker.checkObject(this, true);

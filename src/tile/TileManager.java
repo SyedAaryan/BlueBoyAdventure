@@ -19,17 +19,18 @@ public class TileManager {
 
     GamePanel gp;
     public Tile[] tile;
-    public int[][] mapTileNumber;
+    public int[][][] mapTileNumber;// THe 1st dimension is store the map number
 
     public TileManager(GamePanel gp) {
 
         this.gp = gp;
 
         tile = new Tile[50];
-        mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
+        mapTileNumber = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("/maps/worldV2.txt");
+        loadMap("/maps/worldV3.txt", 0);
+        loadMap("/maps/interior01.txt", 1);
 
     }
 
@@ -97,6 +98,10 @@ public class TileManager {
         //Tree tile
         setup(41, "tree", true);
 
+        setup(42, "hut", false);
+        setup(43, "floor01", false);
+        setup(44, "table01", true);
+
     }
 
     public void setup(int index, String imageName, boolean collision) {
@@ -117,7 +122,7 @@ public class TileManager {
 
     }
 
-    public void loadMap(String filePath) {
+    public void loadMap(String filePath, int map) {
 
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
@@ -137,7 +142,7 @@ public class TileManager {
 
                     int num = Integer.parseInt(numbers[col]);
 
-                    mapTileNumber[col][row] = num;
+                    mapTileNumber[map][col][row] = num;
                     col++;
 
                 }
@@ -163,7 +168,7 @@ public class TileManager {
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
-            int tileNum = mapTileNumber[worldCol][worldRow];
+            int tileNum = mapTileNumber[gp.currentMap][worldCol][worldRow];
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
