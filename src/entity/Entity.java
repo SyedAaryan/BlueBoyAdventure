@@ -127,12 +127,12 @@ public class Entity {
 
     public void dropItem(Entity droppedItem) {
 
-        for (int i = 0; i < gp.obj.length; i++) {
+        for (int i = 0; i < gp.obj[1].length; i++) {
             //null cause the monster is dead, and it is removed from the array
-            if (gp.obj[i] == null) {
-                gp.obj[i] = droppedItem;
-                gp.obj[i].worldX = worldX;
-                gp.obj[i].worldY = worldY;
+            if (gp.obj[gp.currentMap][i] == null) {
+                gp.obj[gp.currentMap][i] = droppedItem;
+                gp.obj[gp.currentMap][i].worldX = worldX;
+                gp.obj[gp.currentMap][i].worldY = worldY;
                 break;
                 // The break is important, if we don't add it the above lines will be executed in all empty slots
             }

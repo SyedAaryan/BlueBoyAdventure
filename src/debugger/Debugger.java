@@ -19,6 +19,6 @@ public class Debugger {
     public boolean realTimeMapUpdater = false;
 
     // To make tile collision off
-    public boolean playerGodMode = true;
+    public boolean playerGodMode = false;
 
 }
