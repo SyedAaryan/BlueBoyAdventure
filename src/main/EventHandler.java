@@ -4,8 +4,9 @@ public class EventHandler {
 
     GamePanel gp;
     EventRect[][][] eventRect;
+    int tempMap, tempCol, tempRow;
 
-    int previousEventX, previousEventY;
+    int previousEventX, previousEventY;// The reason for this is explained in checkEvent Class
     boolean canTouchEvent = true;
 
     public EventHandler(GamePanel gp) {
@@ -127,12 +128,10 @@ public class EventHandler {
 
     public void teleport(int map, int col, int row) {
 
-        gp.currentMap = map;
-        gp.player.worldX = gp.tileSize * col;
-        gp.player.worldY = gp.tileSize * row;
-
-        previousEventX = gp.player.worldX;
-        previousEventY = gp.player.worldY;
+        gp.gameState = gp.transitionState;
+        tempMap = map;
+        tempCol = col;
+        tempRow = row;
 
         canTouchEvent = false;
         gp.playSE(13);
