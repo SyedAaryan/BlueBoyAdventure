@@ -21,10 +21,6 @@ public class Player extends Entity {
     // It means not attacking
     public boolean attackCancelled = false;
 
-    // Inventory
-    public ArrayList<Entity> inventory = new ArrayList<>();
-    public final int maxInventorySize = 20;
-
     Debugger debugger = new Debugger();
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -54,11 +50,12 @@ public class Player extends Entity {
     //Default values of the player
     public void setDefaultValues() {
 
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+//        worldX = gp.tileSize * 23;
+//        worldY = gp.tileSize * 21;
 
-//        worldX = gp.tileSize * 12;
-//        worldY = gp.tileSize * 13;
+        worldX = gp.tileSize * 12;
+        worldY = gp.tileSize * 12;
+        gp.currentMap = 1;
 
         speed = 4;
         direction = "down";
@@ -348,7 +345,7 @@ public class Player extends Entity {
         if (i != 999) {
 
             //PICKUP ONLY ITEMS
-            if (gp.obj[gp.currentMap]   [i].type == type_pickupOnly) {
+            if (gp.obj[gp.currentMap][i].type == type_pickupOnly) {
                 gp.obj[gp.currentMap][i].use(this);
                 gp.obj[gp.currentMap][i] = null;
             }

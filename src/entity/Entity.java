@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -75,6 +76,10 @@ public class Entity {
     public int defenseValue;
     public String description = "";
     public int useCost; //For stuff like fireball, etc
+
+    // Inventory
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     //TYPES
     public int type; // 0 is player, 1 is npc, 2 is monster
@@ -207,7 +212,7 @@ public class Entity {
         }
 
         spriteCounter++;
-        if (spriteCounter > 12) {
+        if (spriteCounter > 24) {
             spriteNum = (spriteNum == 1) ? 2 : 1;
             spriteCounter = 0;
         }
