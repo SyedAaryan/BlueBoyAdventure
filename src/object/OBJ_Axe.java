@@ -15,6 +15,7 @@ public class OBJ_Axe extends Entity {
         attackValue = 2;
 
         description = "[ " + name + "]\nRusty but can cut \nsome trees.";
+        price = 75;
 
         //Solid attack area of the weapon
         attackArea.width = 30;

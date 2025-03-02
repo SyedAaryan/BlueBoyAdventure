@@ -76,6 +76,7 @@ public class Entity {
     public int defenseValue;
     public String description = "";
     public int useCost; //For stuff like fireball, etc
+    public int price;
 
     // Inventory
     public ArrayList<Entity> inventory = new ArrayList<>();

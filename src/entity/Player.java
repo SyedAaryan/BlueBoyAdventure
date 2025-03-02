@@ -71,7 +71,7 @@ public class Player extends Entity {
         dexterity = 1; // The more dexterity he has, the less damage he takes
         exp = 0;
         nextLevelExp = 5;
-        coin = 0;
+        coin = 500;
         currentWeapon = new OBJ_Axe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
@@ -486,7 +486,7 @@ public class Player extends Entity {
     // This method will check for the selected item from the inventory
     public void selectItem() {
 
-        int itemIndex = gp.ui.getItemIndexOnSlot();
+        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol,gp.ui.playerSlotRow);
 
         // This is to check if we are selecting an item and not an empty slot
         if (itemIndex < inventory.size()) {
