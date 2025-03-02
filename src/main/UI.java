@@ -42,6 +42,8 @@ public class UI {
 
     int counter = 0;
 
+    public Entity npc;
+
 
     public UI(GamePanel gp) {
 
@@ -135,6 +137,11 @@ public class UI {
             drawTransition();
         }
 
+        // TRADE STATE
+        if (gp.gameState == gp.tradeState) {
+            drawTradeScreen();
+        }
+
     }
 
     // Draws the player life as well as mana
@@ -225,6 +232,70 @@ public class UI {
 
     }
 
+    // When game state is in trade state
+    public void drawTradeScreen() {
+
+        switch (subState) {
+            case 0 -> tradeSelect();
+            case 1 -> tradeBuy();
+            case 2 -> tradeSell();
+        }
+
+        gp.keyH.enterPressed = false;
+
+    }
+
+    public void tradeSelect() {
+
+        drawDialogueScreen();
+
+        // DRAW WINDOW
+        int x = gp.tileSize * 15;
+        int y = gp.tileSize * 4;
+        int width = gp.tileSize * 3;
+        int height = (int) (gp.tileSize * 3.5);
+        drawSubWindow(x, y, width, height);
+
+        // DRAW TEXTS
+        x += gp.tileSize;
+        y += gp.tileSize;
+        g2.drawString("Buy", x, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - 24, y);
+            if (gp.keyH.enterPressed) {
+                subState = 1;
+            }
+        }
+        y += gp.tileSize;
+
+        g2.drawString("Sell", x, y);
+        if (commandNum == 1) {
+            g2.drawString(">", x - 24, y);
+            if (gp.keyH.enterPressed) {
+                subState = 1;
+            }
+        }
+        y += gp.tileSize;
+
+        g2.drawString("Leave", x, y);
+        if (commandNum == 2) {
+            g2.drawString(">", x - 24, y);
+            if (gp.keyH.enterPressed) {
+                commandNum = 0;
+                gp.gameState = gp.dialogueState;
+                currentDialogue = "Come Again......Hehe";
+            }
+        }
+        y += gp.tileSize;
+
+    }
+
+    public void tradeBuy() {
+    }
+
+    public void tradeSell() {
+    }
+
     public void drawTitleScreen() {
 
         g2.setColor(new Color(0, 0, 0));
@@ -293,9 +364,9 @@ public class UI {
     public void drawDialogueScreen() {
 
         // WINDOW
-        int x = gp.tileSize * 2;
+        int x = gp.tileSize * 3;
         int y = gp.tileSize / 2;
-        int width = gp.screenWidth - (gp.tileSize * 4);
+        int width = gp.screenWidth - (gp.tileSize * 6);
         int height = gp.tileSize * 4;
 
         drawSubWindow(x, y, width, height);
