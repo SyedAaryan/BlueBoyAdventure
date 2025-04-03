@@ -320,6 +320,13 @@ public class KeyHandler implements KeyListener {
             }
         }
 
+        if (gp.ui.subState == 2) {
+            playerInventory(code);
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.ui.subState = 0;
+            }
+        }
+
     }
 
     // For players inventory movement
