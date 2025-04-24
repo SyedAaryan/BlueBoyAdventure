@@ -29,7 +29,7 @@ public class CollisionChecker {
         int tileNum1, tileNum2;
 
         switch (entity.direction) {
-            case "up" -> {
+            case "up" :
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNumber[gp.currentMap][entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNumber[gp.currentMap][entityRightCol][entityTopRow];
@@ -38,8 +38,10 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
 
-            }
-            case "down" -> {
+                break;
+
+
+            case "down":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNumber[gp.currentMap][entityLeftCol][entityBottomRow];
                 tileNum2 = gp.tileM.mapTileNumber[gp.currentMap][entityRightCol][entityBottomRow];
@@ -48,8 +50,9 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
 
-            }
-            case "left" -> {
+                break;
+
+            case "left" :
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNumber[gp.currentMap][entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNumber[gp.currentMap][entityLeftCol][entityBottomRow];
@@ -58,8 +61,9 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
 
-            }
-            case "right" -> {
+                break;
+
+            case "right":
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNumber[gp.currentMap][entityRightCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNumber[gp.currentMap][entityRightCol][entityBottomRow];
@@ -68,8 +72,7 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
 
-            }
-
+                break;
         }
 
     }
@@ -156,7 +159,6 @@ public class CollisionChecker {
             }
 
         }
-
         return index;
 
     }

@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +40,7 @@ public class Entity {
     public boolean alive = true;
     public boolean dying = false;
     boolean hpBarOn = false;
+    public boolean onPath = false;
 
     // COUNTER
     public int spriteCounter = 0;
@@ -184,9 +184,7 @@ public class Entity {
 
     }
 
-    public void update() {
-
-        setAction();
+    public void checkCollision() {
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -197,17 +195,24 @@ public class Entity {
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
         // when the monster contacts the player, it can damage if player is not invincible
-        if (this.type == type_monster && contactPlayer) {
+        if (type == type_monster && contactPlayer) {
             damagePlayer(attack);
         }
+
+    }
+
+    public void update() {
+
+        setAction();
+        checkCollision();
 
         // IF COLLISION IS FALSE, PLAYER CAN MOVE
         if (!collisionOn) {
             switch (direction) {
-                case "up" -> worldY -= speed;
-                case "down" -> worldY += speed;
-                case "left" -> worldX -= speed;
-                case "right" -> worldX += speed;
+                case "up" : worldY -= speed; break;
+                case "down": worldY += speed;break;
+                case "left" : worldX -= speed;break;
+                case "right" : worldX += speed;break;
             }
 
         }
@@ -400,6 +405,79 @@ public class Entity {
         }
 
         return image;
+    }
+
+    public void searchPath(int goalCol, int goalRow) {
+
+        int startCol = (worldX + solidArea.x) / gp.tileSize;
+        int startRow = (worldY + solidArea.y) / gp.tileSize;
+
+        gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+
+        // It means it has found the path
+        if (gp.pFinder.search()) {
+
+            //NEXT worldX AND worldY
+            int nextX = gp.pFinder.pathList.getFirst().col * gp.tileSize;
+            int nextY = gp.pFinder.pathList.getFirst().row * gp.tileSize;
+
+            //Entities solid area
+            int enLeftX = worldX + solidArea.x;
+            int enRightX = worldX + solidArea.x + solidArea.width;
+            int enTopY = worldY + solidArea.y;
+            int enBottomY = worldY + solidArea.y + solidArea.height;
+
+            // The below code may be confusing, check RyiSnow pathfinding vid 27:30
+
+            if (enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+                direction = "up";
+            } else if (enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+                direction = "down";
+            } else if (enTopY >= nextY && enBottomY < nextY + gp.tileSize) {
+                //Left or right
+                if (enLeftX > nextX) {
+                    direction = "left";
+                }
+                if (enLeftX < nextX) {
+                    direction = "right";
+                }
+            } else if (enTopY > nextY && enLeftX > nextX) {
+                // up or left
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            } else if (enTopY > nextY && enLeftX < nextX) {
+                // up or right
+                direction = "up";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            } else if (enTopY < nextY && enLeftX > nextX) {
+                // down or left
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "left";
+                }
+            } else if (enTopY < nextY && enLeftX < nextX) {
+                // down or right
+                direction = "down";
+                checkCollision();
+                if (collisionOn) {
+                    direction = "right";
+                }
+            }
+
+            //If the goal is reached, stop the search
+            int nextCol = gp.pFinder.pathList.getFirst().col;
+            int nextRow = gp.pFinder.pathList.getFirst().row;
+            if (nextCol == goalCol && nextRow == goalRow) {
+                onPath = false;
+            }
+        }
     }
 
 }
