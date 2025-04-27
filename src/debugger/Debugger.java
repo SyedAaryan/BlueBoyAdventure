@@ -21,4 +21,6 @@ public class Debugger {
     // To make tile collision off
     public boolean playerGodMode = false;
 
+    // To show A* path of entities
+    public boolean showPath = false;
 }

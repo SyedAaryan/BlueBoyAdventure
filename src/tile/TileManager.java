@@ -1,5 +1,6 @@
 package tile;
 
+import debugger.Debugger;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -20,7 +21,7 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int[][][] mapTileNumber;// THe 1st dimension is store the map number
-    boolean drawPath = true;
+    Debugger debugger = new Debugger();
 
     public TileManager(GamePanel gp) {
 
@@ -194,7 +195,7 @@ public class TileManager {
 
         }
 
-        if (drawPath) {
+        if (debugger.showPath) {
             g2.setColor(new Color(255, 0, 0, 70));
 
             for (int i = 0; i < gp.pFinder.pathList.size(); i++) {
