@@ -472,11 +472,14 @@ public class Entity {
             }
 
             //If the goal is reached, stop the search
-            int nextCol = gp.pFinder.pathList.getFirst().col;
-            int nextRow = gp.pFinder.pathList.getFirst().row;
-            if (nextCol == goalCol && nextRow == goalRow) {
-                onPath = false;
-            }
+//            int nextCol = gp.pFinder.pathList.getFirst().col;
+//            int nextRow = gp.pFinder.pathList.getFirst().row;
+//            if (nextCol == goalCol && nextRow == goalRow) {
+//                onPath = false;
+//            }
+
+            //The above code is commented when the  NPC wants to follow the player, if it's not commented,
+            //then the NPC won't follow after it reaches the player for the 1st time
         }
     }
 
