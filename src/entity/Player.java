@@ -71,7 +71,7 @@ public class Player extends Entity {
         exp = 0;
         nextLevelExp = 5;
         coin = 500;
-        currentWeapon = new OBJ_Axe(gp);
+        currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // Total attack value is decided by strength and weapon
@@ -242,8 +242,14 @@ public class Player extends Entity {
             // SUBTRACT MANA
             projectile.subtractResource(this);
 
-            // ADD IT TO THE LIST
-            gp.projectileList.add(projectile);
+            //CHECK VACANCY
+            // We check which slot is empty, and put the projectile on that slot
+            for (int i = 0; i < gp.projectile[1].length; i++) {
+                if (gp.projectile[gp.currentMap][i] == null) {
+                    gp.projectile[gp.currentMap][i] = projectile;
+                    break;
+                }
+            }
 
             shotAvailableCounter = 0;
 
@@ -291,6 +297,9 @@ public class Player extends Entity {
         if (spriteCounter <= 5) {
             spriteNum = 1;
         }
+
+        // If teh condition is smth like "spriteCounter > 15 && spriteCounter <= 25", then the hitting window for breaking
+        // the projectile becomes hard, this can be done to increase the difficulty
         if (spriteCounter > 5 && spriteCounter <= 25) {
             spriteNum = 2;
 
@@ -323,6 +332,9 @@ public class Player extends Entity {
 
             int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
             damageInteractiveTile(iTileIndex);
+
+            int projectileIndex = gp.cChecker.checkEntity(this, gp.projectile);
+            damageProjectile(projectileIndex);
 
             // After checking collision, restore the original data
             worldX = currentWorldX;
@@ -464,6 +476,15 @@ public class Player extends Entity {
 
     }
 
+    public void damageProjectile(int i) {
+        // When the player hits the projectile, it dies
+        if (i != 999) {
+            Entity projectile = gp.projectile[gp.currentMap][i];
+            projectile.alive = false;
+            generateParticle(projectile, projectile);
+        }
+    }
+
     public void checkLevelUp() {
 
         if (exp >= nextLevelExp) {
@@ -485,7 +506,7 @@ public class Player extends Entity {
     // This method will check for the selected item from the inventory
     public void selectItem() {
 
-        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol,gp.ui.playerSlotRow);
+        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
 
         // This is to check if we are selecting an item and not an empty slot
         if (itemIndex < inventory.size()) {
