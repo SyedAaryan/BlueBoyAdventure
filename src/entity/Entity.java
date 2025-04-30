@@ -41,6 +41,7 @@ public class Entity {
     public boolean dying = false;
     boolean hpBarOn = false;
     public boolean onPath = false;
+    public boolean knockBack = false;
 
     // COUNTER
     public int spriteCounter = 0;
@@ -49,9 +50,11 @@ public class Entity {
     public int shotAvailableCounter = 0;
     int dyingCounter = 0;
     int hpBarCounter = 0;
+    int knockBackCounter = 0;
 
     // CHARACTER ATTRIBUTES
     public String name;
+    public int defaultSpeed;
     public int speed;
     public int maxLife;
     public int life;
@@ -203,18 +206,61 @@ public class Entity {
 
     public void update() {
 
-        setAction();
-        checkCollision();
+        if (knockBack) {
+            checkCollision();
 
-        // IF COLLISION IS FALSE, PLAYER CAN MOVE
-        if (!collisionOn) {
-            switch (direction) {
-                case "up" : worldY -= speed; break;
-                case "down": worldY += speed;break;
-                case "left" : worldX -= speed;break;
-                case "right" : worldX += speed;break;
+            // If it hits a solid tile, knockBack is false, this is done to avoid the entity passing through solid tiles
+            // during a knockBack
+            if (collisionOn) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            } else {
+                switch (gp.player.direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+            knockBackCounter++;
+            // The more we increase the number, the more the distance increases
+            if (knockBackCounter == 10) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
             }
 
+        } else {
+            setAction();
+            checkCollision();
+
+            // IF COLLISION IS FALSE, PLAYER CAN MOVE
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+
+            }
         }
 
         spriteCounter++;

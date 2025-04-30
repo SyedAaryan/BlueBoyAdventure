@@ -56,7 +56,8 @@ public class Player extends Entity {
 //        worldY = gp.tileSize * 12;
         gp.currentMap = 0;
 
-        speed = 4;
+        defaultSpeed = 4;
+        speed = defaultSpeed;
         direction = "down";
 
         //PLAYER STATUS
@@ -425,6 +426,7 @@ public class Player extends Entity {
         if (i != 999) {
             if (!gp.monster[gp.currentMap][i].invincible) {
                 gp.playSE(5);
+                knockBack(gp.monster[gp.currentMap][i]);
 
                 // It calculates the monster defense and player attack and gives a "damage" value
                 int damage = attack - gp.monster[gp.currentMap][i].defense;
@@ -456,6 +458,13 @@ public class Player extends Entity {
             }
         }
 
+    }
+
+    public void knockBack(Entity entity){
+        //Entities direction == player dir, so that it will go away from the player
+        entity.direction = direction;
+        entity.speed += 10;
+        entity.knockBack = true;
     }
 
     public void damageInteractiveTile(int i) {
