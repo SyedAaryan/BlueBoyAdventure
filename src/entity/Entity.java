@@ -80,6 +80,7 @@ public class Entity {
     public String description = "";
     public int useCost; //For stuff like fireball, etc
     public int price;
+    public int knockBackPower = 0;
 
     // Inventory
     public ArrayList<Entity> inventory = new ArrayList<>();

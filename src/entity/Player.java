@@ -329,7 +329,7 @@ public class Player extends Entity {
              * collides with the monster, this is done using checkEntity(), if it is in fact a monster,
              * we damage it using damageMonster()*/
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, attack);
+            damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
 
             int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
             damageInteractiveTile(iTileIndex);
@@ -421,12 +421,15 @@ public class Player extends Entity {
     }
 
     // This method will damage monster
-    public void damageMonster(int i, int attack) {
+    public void damageMonster(int i, int attack, int knockBackPower) {
 
         if (i != 999) {
             if (!gp.monster[gp.currentMap][i].invincible) {
                 gp.playSE(5);
-                knockBack(gp.monster[gp.currentMap][i]);
+
+                if (knockBackPower > 0) {
+                    knockBack(gp.monster[gp.currentMap][i], knockBackPower);
+                }
 
                 // It calculates the monster defense and player attack and gives a "damage" value
                 int damage = attack - gp.monster[gp.currentMap][i].defense;
@@ -460,10 +463,10 @@ public class Player extends Entity {
 
     }
 
-    public void knockBack(Entity entity){
+    public void knockBack(Entity entity, int knockBackPower) {
         //Entities direction == player dir, so that it will go away from the player
         entity.direction = direction;
-        entity.speed += 10;
+        entity.speed += knockBackPower;
         entity.knockBack = true;
     }
 

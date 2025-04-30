@@ -23,4 +23,8 @@ public class Debugger {
 
     // To show A* path of entities
     public boolean showPath = false;
+
+    // To stop monsters from shooting projectiles
+    public boolean stopProjectiles = false;
+
 }

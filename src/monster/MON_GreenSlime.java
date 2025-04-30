@@ -1,5 +1,6 @@
 package monster;
 
+import debugger.Debugger;
 import entity.Entity;
 import main.GamePanel;
 import object.OBJ_Coin_Bronze;
@@ -12,6 +13,7 @@ import java.util.Random;
 public class MON_GreenSlime extends Entity {
 
     GamePanel gp;
+    Debugger debugger = new Debugger();
 
     public MON_GreenSlime(GamePanel gp) {
 
@@ -93,11 +95,13 @@ public class MON_GreenSlime extends Entity {
 
                 projectile.set(worldX, worldY, direction, true, this);
 
-                //CHECK VACANCY
-                for (int j = 0; j < gp.projectile[1].length;j++){
-                    if(gp.projectile[gp.currentMap][j] == null){
-                        gp.projectile[gp.currentMap][j] = projectile;
-                        break;
+                if(!debugger.stopProjectiles){
+                    //CHECK VACANCY
+                    for (int j = 0; j < gp.projectile[1].length;j++){
+                        if(gp.projectile[gp.currentMap][j] == null){
+                            gp.projectile[gp.currentMap][j] = projectile;
+                            break;
+                        }
                     }
                 }
 
