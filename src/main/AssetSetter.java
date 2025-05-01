@@ -21,34 +21,20 @@ public class AssetSetter {
 
         int mapNum = 0;
         int i = 0;
-        gp.obj[mapNum][i] = new OBJ_Coin_Bronze(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 25;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 23;
-        i++;
-
-        gp.obj[mapNum][i] = new OBJ_Heart(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 21;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 19;
-        i++;
-
-        gp.obj[mapNum][i] = new OBJ_ManaCrystal(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 26;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 21;
-        i++;
-
         gp.obj[mapNum][i] = new OBJ_Axe(gp);
         gp.obj[mapNum][i].worldX = gp.tileSize * 33;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 21;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 7;
         i++;
 
-        gp.obj[mapNum][i] = new OBJ_Shield_Blue(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 35;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 21;
+        gp.obj[mapNum][i] = new OBJ_Door(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 14;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 28;
         i++;
 
-        gp.obj[mapNum][i] = new OBJ_Potion_Red(gp);
-        gp.obj[mapNum][i].worldX = gp.tileSize * 22;
-        gp.obj[mapNum][i].worldY = gp.tileSize * 27;
+        gp.obj[mapNum][i] = new OBJ_Door(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 12;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 12;
+
     }
 
     // Check the EOF for MapNum

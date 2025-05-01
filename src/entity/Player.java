@@ -362,6 +362,14 @@ public class Player extends Entity {
                 gp.obj[gp.currentMap][i] = null;
             }
 
+            //OBSTACLE
+            else if (gp.obj[gp.currentMap][i].type == type_obstacle){
+                if(keyH.enterPressed){
+                    attackCancelled = true;
+                    gp.obj[gp.currentMap][i].interact();
+                }
+            }
+
             // INVENTORY ITEMS
             else {
                 String text;
