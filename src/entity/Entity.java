@@ -569,19 +569,19 @@ public class Entity {
         // Watch ryiSnow game dev no 42 if you didnt understand this, timestamp "10:10"
         switch (user.direction) {
             case "up":
-                nextWorldY = user.getTopY() - 1;
+                nextWorldY = user.getTopY() - user.speed;
                 break;
 
             case "down":
-                nextWorldY = user.getBottomY() + 1;
+                nextWorldY = user.getBottomY() + user.speed;
                 break;
 
             case "left":
-                nextWorldX = user.getLeftX() - 1;
+                nextWorldX = user.getLeftX() - user.speed;
                 break;
 
             case "right":
-                nextWorldX = user.getRightX() + 1;
+                nextWorldX = user.getRightX() + user.speed;
                 break;
         }
         int col = nextWorldX / gp.tileSize;
