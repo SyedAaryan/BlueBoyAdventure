@@ -157,7 +157,8 @@ public class Entity {
     public void interact() {
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
+        return false;
     }
 
     public void checkDrop() {

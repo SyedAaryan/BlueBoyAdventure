@@ -552,8 +552,9 @@ public class Player extends Entity {
             // Checking if the item is a consumable
             if (selectedItem.type == type_consumable) {
 
-                selectedItem.use(this);
-                inventory.remove(itemIndex);
+                if(selectedItem.use(this)){
+                    inventory.remove(itemIndex);
+                }
 
             }
 

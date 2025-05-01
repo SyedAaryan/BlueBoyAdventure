@@ -21,7 +21,7 @@ public class OBJ_Key extends Entity {
 
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.gameState = gp.dialogueState;
         int objIndex = getDetected(entity, gp.obj, "Door");
 
@@ -29,8 +29,10 @@ public class OBJ_Key extends Entity {
             gp.ui.currentDialogue = "You used the " + name + " and opened the door";
             gp.playSE(3);
             gp.obj[gp.currentMap][objIndex] = null;
+            return true;
         } else {
             gp.ui.currentDialogue = " What are you doing ??!!";
+            return false;
         }
 
     }
