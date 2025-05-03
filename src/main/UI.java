@@ -489,6 +489,26 @@ public class UI {
             }
 
             g2.drawImage(entity.inventory.get(i).down1, slotX, slotY, null);
+
+            //DISPLAY COUNT
+            if (entity == gp.player && entity.inventory.get(i).amount > 1){
+                g2.setFont(g2.getFont().deriveFont(32f));
+                int amountX = 0;
+                int amountY = 0;
+
+                String s = "" + entity.inventory.get(i).amount;
+                amountX = getXForAlignToRight(s, slotX + 44);
+                amountY = slotY + gp.tileSize;
+
+                //SHADOW
+                g2.setColor(new Color(60, 60, 60));
+                g2.drawString(s, amountX, amountY);
+
+                //NUMBER
+                g2.setColor(Color.white);
+                g2.drawString(s, amountX - 3, amountY - 3);
+            }
+
             slotX += slotSize;
 
             // 4, 9, 14 because when index it that, it should go to the next row
@@ -953,18 +973,15 @@ public class UI {
                     gp.gameState = gp.dialogueState;
                     currentDialogue = "You too poor, need more coin";
                     drawDialogueScreen();
-                }
-                // If player inventory is full
-                else if (gp.player.inventory.size() == gp.player.maxInventorySize) {
-                    subState = 0;
-                    gp.gameState = gp.dialogueState;
-                    currentDialogue = "You cant carry more items!";
-                    drawDialogueScreen();
-                }
-                // If everything is fine, player can buy :)
-                else {
-                    gp.player.coin -= npc.inventory.get(itemIndex).price;
-                    gp.player.inventory.add(npc.inventory.get(itemIndex));
+                } else {
+                    if (gp.player.canObtainItem(npc.inventory.get(itemIndex))) {
+                        gp.player.coin -= npc.inventory.get(itemIndex).price;
+                    } else {
+                        subState = 0;
+                        gp.gameState = gp.dialogueState;
+                        currentDialogue = "You cant carry more items!";
+                        drawDialogueScreen();
+                    }
                 }
             }
         }
@@ -1005,7 +1022,7 @@ public class UI {
             drawSubWindow(x, y, width, height);
             g2.drawImage(coin, x + 10, y + 8, 32, 32, null);
 
-            int price = gp.player.inventory.get(itemIndex).price/2;
+            int price = gp.player.inventory.get(itemIndex).price / 2;
             String text = "" + price;
             x = getXForAlignToRight(text, gp.tileSize * 18 - 20);
             g2.drawString(text, x, y + 34);
@@ -1018,8 +1035,12 @@ public class UI {
                     subState = 0;
                     gp.gameState = gp.dialogueState;
                     currentDialogue = "You cannot sell an equipped item!!";
-                }else {
-                    gp.player.inventory.remove(itemIndex);
+                } else {
+                    if (gp.player.inventory.get(itemIndex).amount > 1) {
+                        gp.player.inventory.get(itemIndex).amount--;
+                    } else {
+                        gp.player.inventory.remove(itemIndex);
+                    }
                     gp.player.coin += price;
                 }
 

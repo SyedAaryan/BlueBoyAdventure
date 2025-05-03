@@ -7,6 +7,7 @@ import object.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class Player extends Entity {
 
@@ -103,6 +104,7 @@ public class Player extends Entity {
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gp));
+        inventory.add(new OBJ_Axe(gp));
     }
 
     public int getAttack() {
@@ -363,8 +365,8 @@ public class Player extends Entity {
             }
 
             //OBSTACLE
-            else if (gp.obj[gp.currentMap][i].type == type_obstacle){
-                if(keyH.enterPressed){
+            else if (gp.obj[gp.currentMap][i].type == type_obstacle) {
+                if (keyH.enterPressed) {
                     attackCancelled = true;
                     gp.obj[gp.currentMap][i].interact();
                 }
@@ -375,9 +377,7 @@ public class Player extends Entity {
                 String text;
 
                 // Checking whether the inventory is full
-                if (inventory.size() != maxInventorySize) {
-
-                    inventory.add(gp.obj[gp.currentMap][i]);
+                if (canObtainItem(gp.obj[gp.currentMap][i])) {
                     gp.playSE(1);
                     text = "Got a " + gp.obj[gp.currentMap][i].name + "!";
 
@@ -552,14 +552,58 @@ public class Player extends Entity {
             // Checking if the item is a consumable
             if (selectedItem.type == type_consumable) {
 
-                if(selectedItem.use(this)){
-                    inventory.remove(itemIndex);
+                if (selectedItem.use(this)) {
+                    if (selectedItem.amount > 1) {
+                        selectedItem.amount--;
+                    } else {
+                        inventory.remove(itemIndex);
+                    }
                 }
 
             }
 
         }
 
+    }
+
+    //This method can be used for various stuff, to see if the player has the particular item, and returning hte index
+    //has it
+    public int searchItemInInventory(String itemName) {
+        int itemIndex = 999;
+
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i).name.equals(itemName)) {
+                itemIndex = i;
+                break;
+            }
+        }
+        return itemIndex;
+    }
+
+    // A function to see if the player can pick the item and keep it in the inventory
+    public boolean canObtainItem(Entity item) {
+        boolean canObtain = false;
+
+        // CHECK IF STACKABLE
+        if (item.stackable) {
+            int index = searchItemInInventory(item.name);
+
+            if (index != 999) {
+                inventory.get(index).amount++;
+                canObtain = true;
+            } else { // New item, need to check vacancy
+                if (inventory.size() != maxInventorySize) {
+                    inventory.add(item);
+                    canObtain = true;
+                }
+            }
+        } else { // NOT A STACKABLE ITEM
+            if (inventory.size() != maxInventorySize) {
+                inventory.add(item);
+                canObtain = true;
+            }
+        }
+        return canObtain;
     }
 
     public void draw(Graphics2D g2) {

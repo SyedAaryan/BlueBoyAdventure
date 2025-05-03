@@ -81,6 +81,8 @@ public class Entity {
     public int useCost; //For stuff like fireball, etc
     public int price;
     public int knockBackPower = 0;
+    public boolean stackable = false;
+    public int amount = 1;
 
     // Inventory
     public ArrayList<Entity> inventory = new ArrayList<>();
