@@ -25,6 +25,9 @@ public class Debugger {
     public boolean showPath = false;
 
     // To stop monsters from shooting projectiles
-    public boolean stopProjectiles = true;
+    public boolean stopProjectiles = false;
+
+    // To show lighting effect
+    public boolean lightingEffect = false;
 
 }
