@@ -4,12 +4,22 @@ import main.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.SinglePixelPackedSampleModel;
 
 // If you dont understand , watch ryiSnow Lighting Effect video, vid number 44
 public class Lighting {
 
     GamePanel gp;
     BufferedImage darknessFilter;
+
+    int dayCounter;
+    float filterAlpha = 0f;
+
+    final int day = 0;
+    final int dusk = 1;
+    final int night = 2;
+    final int dawn = 3;
+    int dayState = day;
 
     public Lighting(GamePanel gp) {
         this.gp = gp;
@@ -77,10 +87,59 @@ public class Lighting {
             setLightSource();
             gp.player.lightUpdated = false;
         }
+
+        // CHECK THE STATE OF THE DAY
+        if (dayState == day) {
+            dayCounter++;
+            //600 == 10 seconds
+            if (dayCounter > 600) {
+                dayState = dusk;
+                dayCounter = 0;
+            }
+        }
+        if (dayState == dusk) {
+            filterAlpha += 0.001f;
+            if (filterAlpha > 1f) {
+                // If it goes up, it will throw error
+                filterAlpha = 1f;
+                dayState = night;
+            }
+        }
+
+        if (dayState == night) {
+            dayCounter++;
+            if (dayCounter > 600) {
+                dayState = dawn;
+                dayCounter = 0;
+            }
+        }
+
+        if (dayState == dawn) {
+            filterAlpha -= 0.001f;
+            if (filterAlpha < 0f) {
+                filterAlpha = 0;
+                dayState = day;
+            }
+        }
     }
 
     public void draw(Graphics2D g2) {
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         g2.drawImage(darknessFilter, 0, 0, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        //DEBUG
+        String situation = switch (dayState) {
+            case day -> "Day";
+            case dusk -> "Dusk";
+            case night -> "Night";
+            case dawn -> "Dawn";
+            default -> "";
+        };
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(50f));
+        g2.drawString(situation, 800, 500);
+
     }
 
 }
