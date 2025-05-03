@@ -28,6 +28,6 @@ public class Debugger {
     public boolean stopProjectiles = false;
 
     // To show lighting effect
-    public boolean lightingEffect = false;
+    public boolean lightingEffect = true;
 
 }
