@@ -20,6 +20,8 @@ public class Player extends Entity {
     // It means not attacking
     public boolean attackCancelled = false;
 
+    public boolean lightUpdated = false;
+
     Debugger debugger = new Debugger();
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -546,6 +548,15 @@ public class Player extends Entity {
             if (selectedItem.type == type_shield) {
                 currentShield = selectedItem;
                 defense = getDefense();
+            }
+
+            if (selectedItem.type == type_light) {
+                if (currentLight == selectedItem) {
+                    currentLight = null;
+                } else {
+                    currentLight = selectedItem;
+                }
+                lightUpdated = true;
             }
 
             // Checking if the item is a consumable

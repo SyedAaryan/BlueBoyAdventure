@@ -242,7 +242,7 @@ public class GamePanel extends JPanel implements Runnable {
                     iTile[currentMap][i].update();
                 }
             }
-
+            eManager.update();
         }
         if (gameState == pauseState) {
             //NOTHING FOR NOW
@@ -335,7 +335,7 @@ public class GamePanel extends JPanel implements Runnable {
             entityList.clear();
 
             //ENVIRONMENT
-            if(debugger.lightingEffect){
+            if (debugger.lightingEffect) {
                 eManager.draw(g2);
             }
 
