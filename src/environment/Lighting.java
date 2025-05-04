@@ -4,7 +4,6 @@ import main.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.SinglePixelPackedSampleModel;
 
 // If you dont understand , watch ryiSnow Lighting Effect video, vid number 44
 public class Lighting {
@@ -12,14 +11,15 @@ public class Lighting {
     GamePanel gp;
     BufferedImage darknessFilter;
 
-    int dayCounter;
-    float filterAlpha = 0f;
+    public int dayCounter;
+    public float filterAlpha = 0f;
 
-    final int day = 0;
-    final int dusk = 1;
-    final int night = 2;
-    final int dawn = 3;
-    int dayState = day;
+    //DAY STATE
+    public final int day = 0;
+    public final int dusk = 1;
+    public final int night = 2;
+    public final int dawn = 3;
+    public int dayState = day;
 
     public Lighting(GamePanel gp) {
         this.gp = gp;
@@ -33,7 +33,7 @@ public class Lighting {
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
         if (gp.player.currentLight == null) {
-            g2.setColor(new Color(0, 0, 0, 0.98f));
+            g2.setColor(new Color(0, 0, 0.1f, 0.98f));
         } else {
             //Get the center x and y of the light circle
             int centerX = gp.player.screenX + (gp.tileSize / 2);
@@ -44,18 +44,18 @@ public class Lighting {
             float[] fraction = new float[12];
 
             // Watch from ryi snow vid no 44 timestamp : 15:00, if didnt understand
-            color[0] = new Color(0, 0, 0, 0.1f);
-            color[1] = new Color(0, 0, 0, 0.42f);
-            color[2] = new Color(0, 0, 0, 0.52f);
-            color[3] = new Color(0, 0, 0, 0.61f);
-            color[4] = new Color(0, 0, 0, 0.69f);
-            color[5] = new Color(0, 0, 0, 0.76f);
-            color[6] = new Color(0, 0, 0, 0.82f);
-            color[7] = new Color(0, 0, 0, 0.87f);
-            color[8] = new Color(0, 0, 0, 0.91f);
-            color[9] = new Color(0, 0, 0, 0.94f);
-            color[10] = new Color(0, 0, 0, 0.96f);
-            color[11] = new Color(0, 0, 0, 0.98f);
+            color[0] = new Color(0, 0, 0.1f, 0.1f);
+            color[1] = new Color(0, 0, 0.1f, 0.42f);
+            color[2] = new Color(0, 0, 0.1f, 0.52f);
+            color[3] = new Color(0, 0, 0.1f, 0.61f);
+            color[4] = new Color(0, 0, 0.1f, 0.69f);
+            color[5] = new Color(0, 0, 0.1f, 0.76f);
+            color[6] = new Color(0, 0, 0.1f, 0.82f);
+            color[7] = new Color(0, 0, 0.1f, 0.87f);
+            color[8] = new Color(0, 0, 0.1f, 0.91f);
+            color[9] = new Color(0, 0, 0.1f, 0.94f);
+            color[10] = new Color(0, 0, 0.1f, 0.96f);
+            color[11] = new Color(0, 0, 0.1f, 0.98f);
 
             fraction[0] = 0f;
             fraction[1] = 0.4f;

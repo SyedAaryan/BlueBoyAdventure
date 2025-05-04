@@ -148,6 +148,11 @@ public class UI {
             drawTradeScreen();
         }
 
+        // SLEEP STATE
+        if (gp.gameState == gp.sleepState) {
+            drawSleepScreen();
+        }
+
     }
 
     // Draws the player life as well as mana
@@ -484,8 +489,8 @@ public class UI {
 
             // EQUIP CURSOR
             if (entity.inventory.get(i) == entity.currentWeapon ||
-                            entity.inventory.get(i) == entity.currentShield ||
-                            entity.inventory.get(i) == entity.currentLight) {
+                    entity.inventory.get(i) == entity.currentShield ||
+                    entity.inventory.get(i) == entity.currentLight) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
             }
@@ -1049,6 +1054,28 @@ public class UI {
             }
         }
 
+    }
+
+    public void drawSleepScreen() {
+        counter++;
+
+        if (counter < 120) {
+            gp.eManager.lighting.filterAlpha += 0.1f;
+            if (gp.eManager.lighting.filterAlpha > 1f) {
+                gp.eManager.lighting.filterAlpha = 1f;
+            }
+        }
+        if (counter >= 120) {
+            gp.eManager.lighting.filterAlpha -= 0.01f;
+            if (gp.eManager.lighting.filterAlpha <= 0f) {
+                gp.eManager.lighting.filterAlpha = 0f;
+                counter = 0;
+                gp.eManager.lighting.dayState = gp.eManager.lighting.day;
+                gp.eManager.lighting.dayCounter = 0;
+                gp.gameState = gp.playState;
+                gp.player.getPlayerImage();
+            }
+        }
     }
 
     /*This basically returns the index of an element in a slot, it is done by calculating its slotCol
