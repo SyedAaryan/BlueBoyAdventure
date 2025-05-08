@@ -28,6 +28,9 @@ public class MON_Orc extends Entity {
         defense = 2;
         exp = 10;
 
+        motion1_duration = 40;
+        motion2_duration = 85;
+
         solidArea.x = 4;
         solidArea.y = 4;
         solidArea.width = 40;
@@ -80,6 +83,11 @@ public class MON_Orc extends Entity {
             checkStartChasingOrNot(gp.player, 5, 100);
 
             getRandomDirection();
+        }
+
+        // Check if it attacks
+        if (!attacking) {
+            checkAttackOrNot(30, gp.tileSize * 4, gp.tileSize);
         }
     }
 

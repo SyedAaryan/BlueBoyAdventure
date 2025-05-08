@@ -111,7 +111,8 @@ public class Player extends Entity {
     public int getAttack() {
         // With this the players attack area will be updated depending on the weapon
         attackArea = currentWeapon.attackArea;
-
+        motion1_duration = currentWeapon.motion1_duration;
+        motion2_duration = currentWeapon.motion2_duration;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -297,71 +298,6 @@ public class Player extends Entity {
             gp.ui.commandNum = -1;
             gp.stopMusic();
             gp.playSE(12);
-        }
-
-    }
-
-    private void attacking() {
-
-        /*So what happens is that we show the 1st attacking image for 5 frames, then the second attacking
-         * image is shown for 25 frames, after that its back to image 1, so basically, 1 attack animation
-         * lasts for half a second */
-
-        spriteCounter++;
-
-        if (spriteCounter <= 5) {
-            spriteNum = 1;
-        }
-
-        // If teh condition is smth like "spriteCounter > 15 && spriteCounter <= 25", then the hitting window for breaking
-        // the projectile becomes hard, this can be done to increase the difficulty
-        if (spriteCounter > 5 && spriteCounter <= 25) {
-            spriteNum = 2;
-
-            /* When we are attacking, we need the solid area of the weapon and not the player, so we are
-             * storing the players solid area and his world x and y and temporarily focusing on the solid
-             * area of the weapon*/
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
-            int solidAreaWidth = solidArea.width;
-            int solidAreaHeight = solidArea.height;
-
-            // Adjust the players worldX/Y for the attack area
-            switch (direction) {
-                case "up" -> worldY -= attackArea.height;
-                case "down" -> worldY += attackArea.height;
-                case "left" -> worldX -= attackArea.width;
-                case "right" -> worldX += attackArea.width;
-            }
-
-            // Attack area becomes solid area
-            solidArea.width = attackArea.width;
-            solidArea.height = attackArea.height;
-
-            // Check monster collision with the updated worldX, worldY, and solidArea
-            /*So what happens here is that, we are checking if the attack area (this was explained above)
-             * collides with the monster, this is done using checkEntity(), if it is in fact a monster,
-             * we damage it using damageMonster()*/
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, this, attack, currentWeapon.knockBackPower);
-
-            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
-            damageInteractiveTile(iTileIndex);
-
-            int projectileIndex = gp.cChecker.checkEntity(this, gp.projectile);
-            damageProjectile(projectileIndex);
-
-            // After checking collision, restore the original data
-            worldX = currentWorldX;
-            worldY = currentWorldY;
-            solidArea.width = solidAreaWidth;
-            solidArea.height = solidAreaHeight;
-
-        }
-        if (spriteCounter > 25) {
-            spriteNum = 1;
-            standCounter = 0;
-            attacking = false;
         }
 
     }

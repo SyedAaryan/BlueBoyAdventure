@@ -42,7 +42,7 @@ public class Entity {
     public int dialogueIndex = 0;
     public boolean invincible = false;
     public boolean collisionOn = false;
-    boolean attacking = false;
+    public boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
     boolean hpBarOn = false;
@@ -76,6 +76,8 @@ public class Entity {
     public int exp;
     public int nextLevelExp;
     public int coin;
+    public int motion1_duration;
+    public int motion2_duration;
     public Entity currentWeapon;
     public Entity currentShield;
     public Projectile projectile;
@@ -300,6 +302,8 @@ public class Entity {
                 speed = defaultSpeed;
             }
 
+        } else if (attacking) {
+            attacking();
         } else {
             setAction();
             checkCollision();
@@ -322,12 +326,12 @@ public class Entity {
                 }
 
             }
-        }
 
-        spriteCounter++;
-        if (spriteCounter > 24) {
-            spriteNum = (spriteNum == 1) ? 2 : 1;
-            spriteCounter = 0;
+            spriteCounter++;
+            if (spriteCounter > 24) {
+                spriteNum = (spriteNum == 1) ? 2 : 1;
+                spriteCounter = 0;
+            }
         }
 
         if (invincible) {
@@ -358,6 +362,48 @@ public class Entity {
             int i = new Random().nextInt(rate);
             if (i == 0) {
                 onPath = false;
+            }
+        }
+    }
+
+    // Check ryuSnow vid #48 28:30 if you dont understand
+    // rate determines the monsters aggro, the lesser the rate, the more aggro it becomes
+    public void checkAttackOrNot(int rate, int straight, int horizontal) {
+        boolean targetInRange = false;
+        int xDis = getXDistance(gp.player);
+        int yDis = getYDistance(gp.player);
+
+        switch (direction) {
+            case "up":
+                if (gp.player.worldY < worldY && yDis < straight && xDis < horizontal) {
+                    targetInRange = true;
+                }
+                break;
+            case "down":
+                if (gp.player.worldY > worldY && yDis < straight && xDis < horizontal) {
+                    targetInRange = true;
+                }
+                break;
+            case "left":
+                if (gp.player.worldX < worldX && xDis < straight && yDis < horizontal) {
+                    targetInRange = true;
+                }
+                break;
+            case "right":
+                if (gp.player.worldX > worldX && xDis < straight && yDis < horizontal) {
+                    targetInRange = true;
+                }
+                break;
+        }
+
+        if (targetInRange) {
+            //CHECK IF IT INITIATES AN ATTACK
+            int i = new Random().nextInt(rate);
+            if (i == 0) {
+                attacking = true;
+                spriteNum = 1;
+                spriteCounter = 0;
+                shotAvailableCounter = 0;
             }
         }
     }
@@ -407,6 +453,79 @@ public class Entity {
         }
     }
 
+    public void attacking() {
+
+        /*So what happens is that we show the 1st attacking image for 5 frames, then the second attacking
+         * image is shown for 25 frames, after that its back to image 1, so basically, 1 attack animation
+         * lasts for half a second */
+
+        spriteCounter++;
+
+        if (spriteCounter <= motion1_duration) {
+            spriteNum = 1;
+        }
+
+        // If the condition is smth like "spriteCounter > 15 && spriteCounter <= 25", then the hitting window for breaking
+        // the projectile becomes hard, this can be done to increase the difficulty
+        // here motion1_duration is 15 and motion2_duration is 25
+        if (spriteCounter > motion1_duration && spriteCounter <= motion2_duration) {
+            spriteNum = 2;
+
+            /* When we are attacking, we need the solid area of the weapon and not the player, so we are
+             * storing the players solid area and his world x and y and temporarily focusing on the solid
+             * area of the weapon*/
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            // Adjust the players worldX/Y for the attack area
+            switch (direction) {
+                case "up" -> worldY -= attackArea.height;
+                case "down" -> worldY += attackArea.height;
+                case "left" -> worldX -= attackArea.width;
+                case "right" -> worldX += attackArea.width;
+            }
+
+            // Attack area becomes solid area
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            if (type == type_monster) {
+                if (gp.cChecker.checkPlayer(this)) {
+                    damagePlayer(attack);
+                }
+            } else { // For player
+
+                // Check monster collision with the updated worldX, worldY, and solidArea
+                /*So what happens here is that, we are checking if the attack area (this was explained above)
+                 * collides with the monster, this is done using checkEntity(), if it is in fact a monster,
+                 * we damage it using damageMonster()*/
+                int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+                gp.player.damageMonster(monsterIndex, this, attack, currentWeapon.knockBackPower);
+
+                int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+                gp.player.damageInteractiveTile(iTileIndex);
+
+                int projectileIndex = gp.cChecker.checkEntity(this, gp.projectile);
+                gp.player.damageProjectile(projectileIndex);
+            }
+
+            // After checking collision, restore the original data
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+
+        }
+        if (spriteCounter > motion2_duration) {
+            spriteNum = 1;
+            spriteCounter = 0;
+            attacking = false;
+        }
+
+    }
+
     // To damage the player
     public void damagePlayer(int attack) {
         if (!gp.player.invincible) {
@@ -446,37 +565,116 @@ public class Entity {
                         worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
         ) {
 
+
+            int tempScreenX = screenX;
+            int tempScreenY = screenY;
+
+            // THIS IS WHERE WE DRAW IF THE PLAYER IS ATTACKING OR IN NORMAL STATE
             switch (direction) {
                 case "up" -> {
-                    if (spriteNum == 1) {
-                        image = up1;
+
+                    if (!attacking) {
+                        if (spriteNum == 1) {
+                            image = up1;
+                        }
+                        if (spriteNum == 2) {
+                            image = up2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image = up2;
+
+                    if (attacking) {
+                        tempScreenY = screenY - gp.tileSize;
+                        if (spriteNum == 1) {
+                            image = attackUp1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attackUp2;
+                        }
+
+                        // TO CHECK THE ATTACK AREA
+                        if (debugger.playerAttackDebugSwitch) {
+                            g2.setColor(Color.red);
+                            g2.drawRect(tempScreenX + solidArea.x, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
+                        }
                     }
+
                 }
                 case "down" -> {
-                    if (spriteNum == 1) {
-                        image = down1;
+
+                    if (!attacking) {
+                        if (spriteNum == 1) {
+                            image = down1;
+                        }
+                        if (spriteNum == 2) {
+                            image = down2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image = down2;
+
+                    if (attacking) {
+                        if (spriteNum == 1) {
+                            image = attackDown1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attackDown2;
+                        }
+
+                        // TO CHECK THE ATTACK AREA
+                        if (debugger.playerAttackDebugSwitch) {
+                            g2.setColor(Color.red);
+                            g2.drawRect(tempScreenX + solidArea.x, tempScreenY + gp.tileSize, attackArea.width, attackArea.height);
+                        }
                     }
+
                 }
                 case "left" -> {
-                    if (spriteNum == 1) {
-                        image = left1;
+                    if (!attacking) {
+                        if (spriteNum == 1) {
+                            image = left1;
+                        }
+                        if (spriteNum == 2) {
+                            image = left2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image = left2;
+
+                    if (attacking) {
+                        tempScreenX = screenX - gp.tileSize;
+                        if (spriteNum == 1) {
+                            image = attackLeft1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attackLeft2;
+                        }
+
+                        // TO CHECK THE ATTACK AREA
+                        if (debugger.playerAttackDebugSwitch) {
+                            g2.setColor(Color.red);
+                            g2.drawRect(tempScreenX + solidArea.x, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
+                        }
                     }
                 }
                 case "right" -> {
-                    if (spriteNum == 1) {
-                        image = right1;
+                    if (!attacking) {
+                        if (spriteNum == 1) {
+                            image = right1;
+                        }
+                        if (spriteNum == 2) {
+                            image = right2;
+                        }
                     }
-                    if (spriteNum == 2) {
-                        image = right2;
+
+                    if (attacking) {
+                        if (spriteNum == 1) {
+                            image = attackRight1;
+                        }
+                        if (spriteNum == 2) {
+                            image = attackRight2;
+                        }
+
+                        // TO CHECK THE ATTACK AREA
+                        if (debugger.playerAttackDebugSwitch) {
+                            g2.setColor(Color.red);
+                            g2.drawRect(tempScreenX + gp.tileSize, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
+                        }
                     }
                 }
             }
@@ -518,7 +716,7 @@ public class Entity {
                 dyingAnimation(g2);
             }
 
-            g2.drawImage(image, screenX, screenY, null);
+            g2.drawImage(image, tempScreenX, tempScreenY, null);
 
             changeAlpha(g2, 1F);
         }
