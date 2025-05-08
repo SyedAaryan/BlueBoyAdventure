@@ -119,12 +119,13 @@ public class EventHandler {
             gp.gameState = gameState;
             gp.player.attackCancelled = true;
             gp.playSE(2);
-            gp.ui.currentDialogue = "You drank the water \n You life and mana are fully recovered";
+            gp.ui.currentDialogue = "You drank the water \n You life and mana are fully recovered\n(Progress Has been Saved)";
             gp.player.life = gp.player.maxLife;
             gp.player.mana = gp.player.maxMana;
 
             // So when we heal, the monster will reset the below method spawns them
             gp.aSetter.setMonster();
+            gp.saveLoad.save();
 
         }
 

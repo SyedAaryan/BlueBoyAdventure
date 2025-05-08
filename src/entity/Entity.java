@@ -100,6 +100,8 @@ public class Entity {
     public boolean stackable = false;
     public int amount = 1;
     public int lightRadius;
+    public Entity loot;
+    public boolean opened = false;
 
     // Inventory
     public ArrayList<Entity> inventory = new ArrayList<>();
@@ -167,6 +169,8 @@ public class Entity {
     public int getGoalRow(Entity target) {
         return (target.worldY + target.solidArea.y) / gp.tileSize;
     }
+
+    public void setLoot(Entity loot){}
 
     public void setAction() {
     }
