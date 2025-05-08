@@ -41,8 +41,9 @@ public class Player extends Entity {
         solidArea.height = 32;
 
         setDefaultValues();
-        getPlayerImage();
-        getPlayerAttackImage();
+        getImage();
+        getAttackImage();
+        getGuardImage();
 
         // Inventory items
         setItems();
@@ -79,6 +80,7 @@ public class Player extends Entity {
         projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // Total attack value is decided by strength and weapon
         defense = getDefense(); // Total defense value is decided by dexterity and shield
+        transparent = false;
 
     }
 
@@ -120,7 +122,7 @@ public class Player extends Entity {
         return defense = dexterity * currentShield.defenseValue;
     }
 
-    public void getPlayerImage() {
+    public void getImage() {
 
         up1 = setup("/player/boy_up_1", gp.tileSize, gp.tileSize);
         up2 = setup("/player/boy_up_2", gp.tileSize, gp.tileSize);
@@ -134,7 +136,7 @@ public class Player extends Entity {
     }
 
     // This method is used to set the attacking sprite of the player by checking the current weapon
-    public void getPlayerAttackImage() {
+    public void getAttackImage() {
 
         // If the current weapon is a sword
         if (currentWeapon.type == type_sword) {
@@ -173,10 +175,68 @@ public class Player extends Entity {
         right2 = image;
     }
 
+    public void getGuardImage() {
+        guardUp = setup("/player/boy_guard_up", gp.tileSize, gp.tileSize);
+        guardDown = setup("/player/boy_guard_down", gp.tileSize, gp.tileSize);
+        guardLeft = setup("/player/boy_guard_left", gp.tileSize, gp.tileSize);
+        guardRight = setup("/player/boy_guard_right", gp.tileSize, gp.tileSize);
+    }
+
     public void update() {
 
-        if (attacking) {
+        if (knockBack) {
+
+            // CHECK TILE COLLISION
+            collisionOn = false;
+            if (!debugger.playerGodMode) {
+                gp.cChecker.checkTile(this);
+            }
+
+            // CHECK OBJECT COLLISION
+            gp.cChecker.checkObject(this, true);
+
+            //CHECK NPC COLLISION
+            gp.cChecker.checkEntity(this, gp.npc);
+
+            // CHECK MONSTER COLLISION
+            gp.cChecker.checkEntity(this, gp.monster);
+
+            //CHECK INTERACTIVE TILES COLLISION
+            gp.cChecker.checkEntity(this, gp.iTile);
+
+            // If it hits a solid tile, knockBack is false, this is done to avoid the entity passing through solid tiles
+            // during a knockBack
+            if (collisionOn) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            } else {
+                switch (knockBackDirection) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+            knockBackCounter++;
+            // The more we increase the number, the more the distance increases
+            if (knockBackCounter == 10) {
+                knockBackCounter = 0;
+                knockBack = false;
+                speed = defaultSpeed;
+            }
+        } else if (attacking) {
             attacking();
+        } else if (keyH.spacePressed) {
+            guarding = true;
         } else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
             if (keyH.upPressed) {
                 direction = "up";
@@ -233,8 +293,8 @@ public class Player extends Entity {
             }
 
             attackCancelled = false;
-
             gp.keyH.enterPressed = false;
+            guarding = false;
 
             spriteCounter++;
             if (spriteCounter > 12) {
@@ -248,6 +308,7 @@ public class Player extends Entity {
                 spriteNum = 1;
                 standCounter = 0;
             }
+            guarding = false;
         }
 
         // "projectile.alive" is to ensure that the player cant shoot another projectile when the 1st one is still alive
@@ -276,6 +337,7 @@ public class Player extends Entity {
             invincibleCounter++;
             if (invincibleCounter > 60) {
                 invincible = false;
+                transparent = false;
                 invincibleCounter = 0;
             }
         }
@@ -364,12 +426,13 @@ public class Player extends Entity {
 
                 // It calculates the players defense and monster attack and gives a "damage" value to the player
                 int damage = gp.monster[gp.currentMap][i].attack - defense;
-                if (damage < 0) {
-                    damage = 0;
+                if (damage < 1) {
+                    damage = 1;
                 }
 
                 life -= damage;
                 invincible = true;
+                transparent = true;
             }
 
         }
@@ -481,7 +544,7 @@ public class Player extends Entity {
                 attack = getAttack();
 
                 // When the item is changed the below method is called to change the animation
-                getPlayerAttackImage();
+                getAttackImage();
             }
 
             // Checking if the item is a shield and updating the defense
@@ -592,6 +655,10 @@ public class Player extends Entity {
                     }
                 }
 
+                if (guarding) {
+                    image = guardUp;
+                }
+
             }
             case "down" -> {
 
@@ -617,6 +684,10 @@ public class Player extends Entity {
                         g2.setColor(Color.red);
                         g2.drawRect(tempScreenX + solidArea.x, tempScreenY + gp.tileSize, attackArea.width, attackArea.height);
                     }
+                }
+
+                if (guarding) {
+                    image = guardDown;
                 }
 
             }
@@ -645,6 +716,10 @@ public class Player extends Entity {
                         g2.drawRect(tempScreenX + solidArea.x, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
                     }
                 }
+
+                if (guarding) {
+                    image = guardLeft;
+                }
             }
             case "right" -> {
                 if (!attacking) {
@@ -670,12 +745,16 @@ public class Player extends Entity {
                         g2.drawRect(tempScreenX + gp.tileSize, tempScreenY + solidArea.y, attackArea.width, attackArea.height);
                     }
                 }
+
+                if (guarding) {
+                    image = guardRight;
+                }
             }
         }
 
         // This will make the player transparent when they are invincible (in the sense they just got hit)
-        if (invincible) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F));
+        if (transparent) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4F));
         }
 
         g2.drawImage(image, tempScreenX, tempScreenY, null);
