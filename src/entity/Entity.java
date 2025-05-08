@@ -33,6 +33,8 @@ public class Entity {
 
     String[] dialogues = new String[20];
 
+    public Entity attacker;
+
     // STATE
     public int worldX, worldY;
     public String direction = "down";
@@ -46,6 +48,7 @@ public class Entity {
     boolean hpBarOn = false;
     public boolean onPath = false;
     public boolean knockBack = false;
+    public String knockBackDirection;
 
     // COUNTER
     public int spriteCounter = 0;
@@ -146,7 +149,7 @@ public class Entity {
     }
 
     public int getTileDistance(Entity target) {
-        return (getXDistance(target) + getYDistance(target));
+        return (getXDistance(target) + getYDistance(target)) / gp.tileSize;
     }
 
     public int getGoalCol(Entity target) {
@@ -274,7 +277,7 @@ public class Entity {
                 knockBack = false;
                 speed = defaultSpeed;
             } else {
-                switch (gp.player.direction) {
+                switch (knockBackDirection) {
                     case "up":
                         worldY -= speed;
                         break;
@@ -419,6 +422,14 @@ public class Entity {
             gp.player.life -= damage;
             gp.player.invincible = true;
         }
+    }
+
+    public void setKnockBack(Entity target, Entity attacker, int knockBackPower) {
+
+        this.attacker = attacker;
+        target.knockBackDirection = attacker.direction;
+        target.speed += knockBackPower;
+        target.knockBack = true;
     }
 
     public void draw(Graphics2D g2) {
