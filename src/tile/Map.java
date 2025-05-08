@@ -57,6 +57,19 @@ public class Map extends TileManager {
         int x = gp.screenWidth / 2 - width / 2;
         int y = gp.screenHeight / 2 - height / 2;
         g2.drawImage(worldMap[gp.currentMap], x, y, width, height, null);
+
+        //DRAW PLAYER IN THE MAP
+        // If you don't understand this, watch ryiSnow vid no #47, 13:30
+        double scale = (double) (gp.tileSize * gp.maxWorldCol) / width;
+        int playerX = (int) (x + gp.player.worldX / scale);
+        int playerY = (int) (y + gp.player.worldY / scale);
+        int playerSize = (int) (gp.tileSize / scale);
+        g2.drawImage(gp.player.down1, playerX, playerY, playerSize, playerSize, null);
+
+        //HINT ("Press M to close the map")
+        g2.setFont(gp.ui.maruMonica.deriveFont(32f));
+        g2.setColor(Color.white);
+        g2.drawString("Press M to close the map", 750, 550);
     }
 
 }

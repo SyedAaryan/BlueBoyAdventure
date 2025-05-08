@@ -20,7 +20,7 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font purisaB, maruMonica;
+    public Font purisaB, maruMonica;
 
     BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank, coin;
 
