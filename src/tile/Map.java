@@ -72,4 +72,26 @@ public class Map extends TileManager {
         g2.drawString("Press M to close the map", 750, 550);
     }
 
+    public void drawMinMap(Graphics2D g2) {
+        if (miniMapOn) {
+            //DRAW MAP
+            int width = 200;
+            int height = 200;
+            int x = gp.screenWidth - width - 50;
+            int y = 50;
+
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+            g2.drawImage(worldMap[gp.currentMap], x, y, width, height, null);
+
+            //DRAW PLAYER IN THE MAP
+            double scale = (double) (gp.tileSize * gp.maxWorldCol) / width;
+            int playerX = (int) (x + gp.player.worldX / scale);
+            int playerY = (int) (y + gp.player.worldY / scale);
+            int playerSize = (int) (gp.tileSize / 2);
+            g2.drawImage(gp.player.down1, playerX - 6, playerY - 6, playerSize, playerSize, null);
+
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        }
+    }
+
 }

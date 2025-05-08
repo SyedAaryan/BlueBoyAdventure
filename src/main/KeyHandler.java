@@ -149,6 +149,14 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.mapState;
         }
 
+        if (code == KeyEvent.VK_X) {
+            if (!gp.map.miniMapOn) {
+                gp.map.miniMapOn = true;
+            } else {
+                gp.map.miniMapOn = false;
+            }
+        }
+
         // Real time map updater
         if (debugger.realTimeMapUpdater) {
             if (code == KeyEvent.VK_R) {
