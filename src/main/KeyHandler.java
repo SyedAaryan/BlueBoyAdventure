@@ -299,11 +299,11 @@ public class KeyHandler implements KeyListener {
             // gp.ui.commandNum == 0 is retry
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.playState;
-                gp.retry();
+                gp.resetGame(false);
                 gp.playMusic(0);
             } else if (gp.ui.commandNum == 1) { // commandNum == 1 is title screen
                 gp.gameState = gp.titleState;
-                gp.restart();
+                gp.resetGame(true);
                 gp.stopMusic();
             }
         }

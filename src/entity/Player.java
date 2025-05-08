@@ -41,12 +41,6 @@ public class Player extends Entity {
         solidArea.height = 32;
 
         setDefaultValues();
-        getImage();
-        getAttackImage();
-        getGuardImage();
-
-        // Inventory items
-        setItems();
     }
 
     //Default values of the player
@@ -77,9 +71,17 @@ public class Player extends Entity {
         coin = 500;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        currentLight = null;
         projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // Total attack value is decided by strength and weapon
         defense = getDefense(); // Total defense value is decided by dexterity and shield
+
+        getImage();
+        getAttackImage();
+        getGuardImage();
+
+        // Inventory items
+        setItems();
 
     }
 
@@ -92,11 +94,15 @@ public class Player extends Entity {
 
     }
 
-    public void restoreLifeAndMana() {
+    public void restoreStatus() {
         life = maxLife;
         mana = maxMana;
         invincible = false;
         transparent = false;
+        attacking = false;
+        guarding = false;
+        knockBack = false;
+        lightUpdated = true;
     }
 
     // To set the inventory items

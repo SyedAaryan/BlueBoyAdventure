@@ -3,7 +3,6 @@ package environment;
 import main.GamePanel;
 
 import java.awt.Graphics2D;
-import java.sql.ClientInfoStatus;
 
 public class EnvironmentManager {
 
