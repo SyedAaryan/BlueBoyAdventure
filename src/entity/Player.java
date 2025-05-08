@@ -80,7 +80,6 @@ public class Player extends Entity {
         projectile = new OBJ_Fireball(gp);
         attack = getAttack(); // Total attack value is decided by strength and weapon
         defense = getDefense(); // Total defense value is decided by dexterity and shield
-        transparent = false;
 
     }
 
@@ -97,6 +96,7 @@ public class Player extends Entity {
         life = maxLife;
         mana = maxMana;
         invincible = false;
+        transparent = false;
     }
 
     // To set the inventory items
@@ -237,6 +237,7 @@ public class Player extends Entity {
             attacking();
         } else if (keyH.spacePressed) {
             guarding = true;
+            guardCounter++;
         } else if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
             if (keyH.upPressed) {
                 direction = "up";
@@ -295,6 +296,7 @@ public class Player extends Entity {
             attackCancelled = false;
             gp.keyH.enterPressed = false;
             guarding = false;
+            guardCounter = 0;
 
             spriteCounter++;
             if (spriteCounter > 12) {
@@ -309,6 +311,7 @@ public class Player extends Entity {
                 standCounter = 0;
             }
             guarding = false;
+            guardCounter = 0;
         }
 
         // "projectile.alive" is to ensure that the player cant shoot another projectile when the 1st one is still alive
@@ -356,10 +359,13 @@ public class Player extends Entity {
 
         // Checking if the play has no life, if he doesn't, game ends
         if (life <= 0) {
-            gp.gameState = gp.gameOverState;
-            gp.ui.commandNum = -1;
-            gp.stopMusic();
-            gp.playSE(12);
+            if(debugger.immortal){
+                gp.gameState = gp.gameOverState;
+                gp.ui.commandNum = -1;
+                gp.stopMusic();
+                gp.playSE(12);
+            }
+
         }
 
     }
@@ -448,6 +454,10 @@ public class Player extends Entity {
 
                 if (knockBackPower > 0) {
                     setKnockBack(gp.monster[gp.currentMap][i], attacker, knockBackPower);
+                }
+
+                if (gp.monster[gp.currentMap][i].offBalance) {
+                    attack *= 5;
                 }
 
                 // It calculates the monster defense and player attack and gives a "damage" value

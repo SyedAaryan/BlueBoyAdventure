@@ -30,4 +30,7 @@ public class Debugger {
     // To show lighting effect
     public boolean lightingEffect = true;
 
+    //Player immortal switch
+    public boolean immortal = false;
+
 }

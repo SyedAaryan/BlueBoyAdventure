@@ -52,6 +52,7 @@ public class Entity {
     public String knockBackDirection;
     public boolean guarding = false;
     public boolean transparent = false;
+    public boolean offBalance = false;
 
     // COUNTER
     public int spriteCounter = 0;
@@ -61,6 +62,8 @@ public class Entity {
     int dyingCounter = 0;
     int hpBarCounter = 0;
     int knockBackCounter = 0;
+    public int guardCounter = 0;
+    int offBalanceCounter = 0;
 
     // CHARACTER ATTRIBUTES
     public String name;
@@ -349,6 +352,14 @@ public class Entity {
             shotAvailableCounter++;
         }
 
+        if (offBalance) {
+            offBalanceCounter++;
+            if (offBalanceCounter > 60) {
+                offBalance = false;
+                offBalanceCounter = 0;
+            }
+        }
+
     }
 
     public void checkStartChasingOrNot(Entity target, int distance, int rate) {
@@ -558,8 +569,23 @@ public class Entity {
             // Get oppo direction of the attacker
             String canGuardDirection = getOppositeDirection(direction);
             if (gp.player.guarding && gp.player.direction.equals(canGuardDirection)) {
-                damage /= 3;
-                gp.playSE(15);
+                //PARRY
+                // It means, if they player hits the guard key less than 10 frames, before it hits the player, he parries
+                // The higher the number, the easier it is ot parry
+                if (gp.player.guardCounter < 10) {
+                    damage = 0;
+                    gp.playSE(16);
+
+                    //KnockBacking the enemy
+                    setKnockBack(this, gp.player, knockBackPower);
+                    offBalance = true;
+
+                    // This will make the monster stuck in a while, making it seem as if he is frozen
+                    spriteCounter = -60;
+                } else { // It was a block and not a parry
+                    damage /= 3;
+                    gp.playSE(15);
+                }
             } else { //NOT GUARDING
                 // WE CAN GIVE DAMAGE
                 gp.playSE(6);
