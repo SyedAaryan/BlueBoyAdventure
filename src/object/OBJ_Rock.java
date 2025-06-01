@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class OBJ_Rock extends Projectile {
 
+    public static final String objName = "Rock";
     GamePanel gp;
 
     public OBJ_Rock(GamePanel gp) {
@@ -15,7 +16,7 @@ public class OBJ_Rock extends Projectile {
         super(gp);
         this.gp = gp;
 
-        name = "Rock";
+        name = objName;
         speed = 5;
         maxLife = 80;
         life = maxLife;
@@ -57,15 +58,15 @@ public class OBJ_Rock extends Projectile {
         return new Color(40, 50, 0);
     }
 
-    public int getParticleSize(){
+    public int getParticleSize() {
         return 10; // 6 pixels
     }
 
-    public int getParticleSpeed(){
+    public int getParticleSpeed() {
         return 1; // speed
     }
 
-    public int getParticleMaxLife(){
+    public int getParticleMaxLife() {
         return 20;
     }
 

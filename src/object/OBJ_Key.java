@@ -5,6 +5,7 @@ import main.GamePanel;
 
 public class OBJ_Key extends Entity {
 
+    public static final String objName = "Key";
     GamePanel gp;
 
     public OBJ_Key(GamePanel gp) {
@@ -12,7 +13,7 @@ public class OBJ_Key extends Entity {
         super(gp);
         this.gp = gp;
 
-        name = "Key";
+        name = objName;
         type = type_consumable;
         down1 = setup("/objects/key", gp.tileSize, gp.tileSize);
         price = 10;

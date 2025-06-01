@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class OBJ_Fireball extends Projectile {
 
+    public static final String objName = "Fireball";
     GamePanel gp;
 
     public OBJ_Fireball(GamePanel gp) {
@@ -15,7 +16,7 @@ public class OBJ_Fireball extends Projectile {
         super(gp);
         this.gp = gp;
 
-        name = "Fireball";
+        name = objName;
         speed = 8;
         maxLife = 80;
         life = maxLife;
@@ -58,15 +59,15 @@ public class OBJ_Fireball extends Projectile {
         return new Color(240, 50, 0);
     }
 
-    public int getParticleSize(){
+    public int getParticleSize() {
         return 10; // 6 pixels
     }
 
-    public int getParticleSpeed(){
+    public int getParticleSpeed() {
         return 1; // speed
     }
 
-    public int getParticleMaxLife(){
+    public int getParticleMaxLife() {
         return 20;
     }
 

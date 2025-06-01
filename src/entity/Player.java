@@ -95,7 +95,7 @@ public class Player extends Entity {
 
     }
 
-    public void setDialogue(){
+    public void setDialogue() {
         dialogues[0][0] = "You are Level " + level;
     }
 
@@ -563,6 +563,7 @@ public class Player extends Entity {
 
             gp.playSE(8);
             gp.gameState = gp.dialogueState;
+            setDialogue();
             startDialogue(this, 0);
         }
 
@@ -636,24 +637,26 @@ public class Player extends Entity {
 
     // A function to see if the player can pick the item and keep it in the inventory
     public boolean canObtainItem(Entity item) {
+
         boolean canObtain = false;
+        Entity newItem = gp.eGenerator.getObject(item.name);
 
         // CHECK IF STACKABLE
-        if (item.stackable) {
-            int index = searchItemInInventory(item.name);
+        if (newItem.stackable) {
+            int index = searchItemInInventory(newItem.name);
 
             if (index != 999) {
                 inventory.get(index).amount++;
                 canObtain = true;
             } else { // New item, need to check vacancy
                 if (inventory.size() != maxInventorySize) {
-                    inventory.add(item);
+                    inventory.add(newItem);
                     canObtain = true;
                 }
             }
         } else { // NOT A STACKABLE ITEM
             if (inventory.size() != maxInventorySize) {
-                inventory.add(item);
+                inventory.add(newItem);
                 canObtain = true;
             }
         }
