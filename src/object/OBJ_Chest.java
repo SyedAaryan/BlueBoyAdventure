@@ -30,29 +30,33 @@ public class OBJ_Chest extends Entity {
 
     public void setLoot(Entity loot) {
         this.loot = loot;
+        setDialogue();
+        // We are calling setDialogue here because it has "loot", and if we call it from OBJ_Chest, it will return null
+    }
+
+    public void setDialogue() {
+        dialogues[0][0] = "You opened a chest and found a" + loot.name + "!\n..But you cannot carry any more";
+
+        dialogues[1][0] = "You opened a chest and found a" + loot.name + "\nYou obtained the" + loot.name + "!";
+
+        dialogues[2][0] = "Its Empty :(";
     }
 
     public void interact() {
 
-        gp.gameState = gp.dialogueState;
-
         if (!opened) {
             gp.playSE(3);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("You opened a chest and found a ").append(loot.name).append("!");
-
             if (!gp.player.canObtainItem(loot)) {
-                sb.append("\n....But your inventory is full");
+                startDialogue(this, 0);
             } else {
-                sb.append("\nYou obtained the").append(loot.name).append("!");
+                startDialogue(this, 1);
                 down1 = image2;
                 opened = true;
             }
-            gp.ui.currentDialogue = sb.toString();
 
         } else {
-            gp.ui.currentDialogue = "Its Empty :(";
+            startDialogue(this, 2);
         }
 
     }

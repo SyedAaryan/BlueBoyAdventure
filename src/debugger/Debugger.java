@@ -33,4 +33,7 @@ public class Debugger {
     //Player immortal switch
     public boolean immortal = false;
 
+    // To display text simultaneously instead of one by one
+    public boolean displayTextSimultaneously = false;
+
 }
