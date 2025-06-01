@@ -29,8 +29,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow; //576 pixels
 
     //WORLD SETTINGS
-    public final int maxWorldCol = 50;
-    public final int maxWorldRow = 50;
+    public int maxWorldCol = 50;
+    public int maxWorldRow = 50;
     public final int maxMap = 10; // Max number of maps the game can have, we can any number, but for this game only 10
     public int currentMap = 0;
 
