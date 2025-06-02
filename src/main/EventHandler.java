@@ -77,6 +77,14 @@ public class EventHandler {
                 teleport(0, 10, 39);
             } else if (hit(1, 12, 9, "up")) { // For talking with the merchant through the table
                 speak(gp.npc[1][0]);
+            } else if (hit(0,12,9,"any")){ // to the dungeon
+                teleport(2,9,41);
+            } else if (hit(2,9,41,"any")){ // to outside
+                teleport(0,12,9);
+            } else if (hit(2,8,7,"any")){ // to B2
+                teleport(3,26,41);
+            } else if (hit(3,26,41,"any")){ // to B2
+                teleport(2,8,7);
             }
         }
 
