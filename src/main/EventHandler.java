@@ -72,19 +72,19 @@ public class EventHandler {
             } else if (hit(0, 23, 12, "up")) {
                 healingPool(gp.dialogueState);
             } else if (hit(0, 10, 39, "any")) {
-                teleport(1, 12, 13);
+                teleport(1, 12, 13, gp.indoor);
             } else if (hit(1, 12, 13, "any")) {
-                teleport(0, 10, 39);
+                teleport(0, 10, 39, gp.outside);
             } else if (hit(1, 12, 9, "up")) { // For talking with the merchant through the table
                 speak(gp.npc[1][0]);
-            } else if (hit(0,12,9,"any")){ // to the dungeon
-                teleport(2,9,41);
-            } else if (hit(2,9,41,"any")){ // to outside
-                teleport(0,12,9);
-            } else if (hit(2,8,7,"any")){ // to B2
-                teleport(3,26,41);
-            } else if (hit(3,26,41,"any")){ // to B2
-                teleport(2,8,7);
+            } else if (hit(0, 12, 9, "any")) { // to the dungeon
+                teleport(2, 9, 41, gp.dungeon);
+            } else if (hit(2, 9, 41, "any")) { // to outside
+                teleport(0, 12, 9, gp.outside);
+            } else if (hit(2, 8, 7, "any")) { // to B2
+                teleport(3, 26, 41, gp.dungeon);
+            } else if (hit(3, 26, 41, "any")) { // to B2
+                teleport(2, 8, 7, gp.dungeon);
             }
         }
 
@@ -150,9 +150,10 @@ public class EventHandler {
 
     }
 
-    public void teleport(int map, int col, int row) {
+    public void teleport(int map, int col, int row, int area) {
 
         gp.gameState = gp.transitionState;
+        gp.nextArea = area;
         tempMap = map;
         tempCol = col;
         tempRow = row;
