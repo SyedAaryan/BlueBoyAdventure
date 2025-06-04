@@ -120,6 +120,7 @@ public class Entity {
     public final int type_pickupOnly = 7;
     public final int type_obstacle = 8;
     public final int type_light = 9;
+    public final int type_pickaxe = 10;
 
     public Entity(GamePanel gp) {
 
@@ -197,7 +198,7 @@ public class Entity {
     }
 
     // The NPC will face the player
-    public void facePlayer(){
+    public void facePlayer() {
         switch (gp.player.direction) {
             case "up" -> direction = "down";
             case "down" -> direction = "up";
@@ -207,7 +208,7 @@ public class Entity {
         }
     }
 
-    public void startDialogue(Entity entity, int setNum){
+    public void startDialogue(Entity entity, int setNum) {
         gp.gameState = gp.dialogueState;
         gp.ui.npc = entity;
         dialogueSet = setNum;

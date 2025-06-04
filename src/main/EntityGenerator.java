@@ -45,6 +45,9 @@ public class EntityGenerator {
             case OBJ_ManaCrystal.objName:
                 obj = new OBJ_ManaCrystal(gp);
                 break;
+            case OBJ_Pickaxe.objName:
+                obj = new OBJ_Pickaxe(gp);
+                break;
             case OBJ_Potion_Red.objName:
                 obj = new OBJ_Potion_Red(gp);
                 break;
