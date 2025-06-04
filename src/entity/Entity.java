@@ -35,6 +35,7 @@ public class Entity {
     public String[][] dialogues = new String[20][20];
 
     public Entity attacker;
+    public Entity linkedEntity;
 
     // STATE
     public int worldX, worldY;
@@ -188,6 +189,9 @@ public class Entity {
     }
 
     public void setAction() {
+    }
+
+    public void move(String direction) {
     }
 
     public void damageReaction() {

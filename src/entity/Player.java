@@ -462,11 +462,12 @@ public class Player extends Entity {
 
     public void interactNPC(int i) {
 
-        if (keyH.enterPressed) {
-            if (i != 999) {
+        if (i != 999) {
+            if (gp.keyH.enterPressed) {
                 attackCancelled = true;
                 gp.npc[gp.currentMap][i].speak();
             }
+            gp.npc[gp.currentMap][i].move(direction);
         }
 
     }
