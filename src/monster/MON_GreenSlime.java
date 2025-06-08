@@ -71,7 +71,7 @@ public class MON_GreenSlime extends Entity {
             // there is a 50% chance that the monster may go aggro
             checkStartChasingOrNot(gp.player, 5, 100);
 
-            getRandomDirection();
+            getRandomDirection(120);
         }
     }
 

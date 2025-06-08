@@ -466,12 +466,12 @@ public class Entity {
         }
     }
 
-    public void getRandomDirection() {
+    public void getRandomDirection(int interval) {
 
         actionLockCounter++;
 
         // 120 cause 120 frames, i,e 2 seconds
-        if (actionLockCounter == 120) {
+        if (actionLockCounter == interval) {
 
             Random random = new Random();
             int i = random.nextInt(100) + 1; // Pick any number from 1 to 100

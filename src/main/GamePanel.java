@@ -127,6 +127,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void resetGame(boolean restart) {
+
+        //If the player dies, he respawns outside
+        //currentArea = outside;
         player.setDefaultPosition();
         player.restoreStatus();
         player.resetCounter();

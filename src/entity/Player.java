@@ -408,7 +408,7 @@ public class Player extends Entity {
 
         // Checking if the play has no life, if he doesn't, game ends
         if (life <= 0) {
-            if (debugger.immortal) {
+            if (!debugger.immortal) {
                 gp.gameState = gp.gameOverState;
                 gp.ui.commandNum = -1;
                 gp.stopMusic();
