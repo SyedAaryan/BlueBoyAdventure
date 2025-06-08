@@ -52,9 +52,9 @@ public class Player extends Entity {
 //        worldX = gp.tileSize * 9;
 //        worldY = gp.tileSize * 38;
 
-        worldX = gp.tileSize * 11;
-        worldY = gp.tileSize * 11;
-        gp.currentMap = 0;
+        worldX = gp.tileSize * 27;
+        worldY = gp.tileSize * 40;
+        gp.currentMap = 3;
 
         defaultSpeed = 4;
         speed = defaultSpeed;
@@ -237,7 +237,7 @@ public class Player extends Entity {
 
             // CHECK TILE COLLISION
             collisionOn = false;
-            if (!debugger.playerGodMode) {
+            if (!debugger.tileCollision) {
                 gp.cChecker.checkTile(this);
             }
 
@@ -301,7 +301,7 @@ public class Player extends Entity {
 
             // CHECK TILE COLLISION
             collisionOn = false;
-            if (!debugger.playerGodMode) {
+            if (!debugger.tileCollision) {
                 gp.cChecker.checkTile(this);
             }
 
@@ -408,7 +408,7 @@ public class Player extends Entity {
 
         // Checking if the play has no life, if he doesn't, game ends
         if (life <= 0) {
-            if (!debugger.immortal) {
+            if (!keyH.godMode) {
                 gp.gameState = gp.gameOverState;
                 gp.ui.commandNum = -1;
                 gp.stopMusic();

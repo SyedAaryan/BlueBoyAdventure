@@ -266,7 +266,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         //DEBUG
         long drawStart = 0;
-        if (debugger.checkDrawTime) {
+        if (keyH.showDebugText) {
             drawStart = System.nanoTime();
         }
 
@@ -366,7 +366,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 
         //DEBUG
-        if (debugger.checkDrawTime) {
+        if (keyH.showDebugText) {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
 
@@ -389,6 +389,9 @@ public class GamePanel extends JPanel implements Runnable {
             y += lineHeight;
 
             g2.drawString("Draw Time " + passed, x, y);
+            y += lineHeight;
+
+            g2.drawString("God mode : " + keyH.godMode, x, y);
         }
 
     }

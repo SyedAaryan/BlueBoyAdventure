@@ -129,6 +129,14 @@ public class Entity {
 
     }
 
+    public int getCenterX() {
+        return worldX + left1.getWidth() / 2;
+    }
+
+    public int getCenterY() {
+        return worldY + up1.getHeight() / 2;
+    }
+
     public int getLeftX() {
         return worldX + solidArea.x;
     }
@@ -154,11 +162,11 @@ public class Entity {
     }
 
     public int getXDistance(Entity target) {
-        return Math.abs(worldX - target.worldX);
+        return Math.abs(getCenterY() - target.getCenterX());
     }
 
     public int getYDistance(Entity target) {
-        return Math.abs(worldY - target.worldY);
+        return Math.abs(getCenterY() - target.getCenterY());
     }
 
     public int getTileDistance(Entity target) {
@@ -414,22 +422,22 @@ public class Entity {
 
         switch (direction) {
             case "up":
-                if (gp.player.worldY < worldY && yDis < straight && xDis < horizontal) {
+                if (gp.player.getCenterY() < getCenterY() && yDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
             case "down":
-                if (gp.player.worldY > worldY && yDis < straight && xDis < horizontal) {
+                if (gp.player.getCenterY() > getCenterY() && yDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
             case "left":
-                if (gp.player.worldX < worldX && xDis < straight && yDis < horizontal) {
+                if (gp.player.getCenterX() < getCenterX() && xDis < straight && yDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
             case "right":
-                if (gp.player.worldX > worldX && xDis < straight && yDis < horizontal) {
+                if (gp.player.getCenterX() > getCenterX() && xDis < straight && yDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
@@ -647,9 +655,9 @@ public class Entity {
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
         if (
-                worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX + gp.tileSize * 5 > gp.player.worldX - gp.player.screenX &&
                         worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                        worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                        worldY + gp.tileSize * 5 > gp.player.worldY - gp.player.screenY &&
                         worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
         ) {
 
@@ -671,7 +679,7 @@ public class Entity {
                     }
 
                     if (attacking) {
-                        tempScreenY = screenY - gp.tileSize;
+                        tempScreenY = screenY - up1.getHeight();
                         if (spriteNum == 1) {
                             image = attackUp1;
                         }
@@ -725,7 +733,7 @@ public class Entity {
                     }
 
                     if (attacking) {
-                        tempScreenX = screenX - gp.tileSize;
+                        tempScreenX = screenX - left1.getWidth();
                         if (spriteNum == 1) {
                             image = attackLeft1;
                         }

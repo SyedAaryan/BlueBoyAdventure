@@ -12,6 +12,8 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, rightPressed, leftPressed, enterPressed, shotKeyPressed, spacePressed;
 
     Debugger debugger = new Debugger();
+    public boolean showDebugText = false;
+    public boolean godMode = false;
 
     public KeyHandler(GamePanel gp) {
 
@@ -161,6 +163,14 @@ public class KeyHandler implements KeyListener {
             } else {
                 gp.map.miniMapOn = false;
             }
+        }
+
+        if (code == KeyEvent.VK_T) {
+            showDebugText = !showDebugText;
+        }
+
+        if (code == KeyEvent.VK_G) {
+            godMode = !godMode;
         }
 
         // Real time map updater

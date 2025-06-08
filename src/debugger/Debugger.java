@@ -2,9 +2,6 @@ package debugger;
 
 public class Debugger {
 
-    // Debug switch for checking the draw time and many more
-    public boolean checkDrawTime = false;
-
     // Debug switch for checking solid area of the player
     public boolean solidAreaOfPlayerDebugSwitch = false;
 
@@ -19,7 +16,7 @@ public class Debugger {
     public boolean realTimeMapUpdater = false;
 
     // To make tile collision off
-    public boolean playerGodMode = false;
+    public boolean tileCollision = false;
 
     // To show A* path of entities
     public boolean showPath = false;
@@ -30,10 +27,8 @@ public class Debugger {
     // To show lighting effect
     public boolean lightingEffect = true;
 
-    //Player immortal switch
-    public boolean immortal = false;
-
     // To display text simultaneously instead of one by one
     public boolean displayTextSimultaneously = false;
 
+    //GOD MODE switch made has G
 }
