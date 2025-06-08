@@ -55,6 +55,7 @@ public class Entity {
     public boolean guarding = false;
     public boolean transparent = false;
     public boolean offBalance = false;
+    public boolean inRange = false;
 
     // COUNTER
     public int spriteCounter = 0;
@@ -500,6 +501,28 @@ public class Entity {
         }
     }
 
+    // For monsters like skeleton lord
+    public void moveTowardsPlayer(int interval) {
+        actionLockCounter++;
+
+        if (actionLockCounter > interval) {
+            if (getXDistance(gp.player) > getYDistance(gp.player)) { // The entity moves left or right
+                if (gp.player.getCenterX() < getCenterX()) {
+                    direction = "left";
+                } else {
+                    direction = "right";
+                }
+            } else if (getXDistance(gp.player) < getYDistance(gp.player)) {// The entity moves up or down
+                if (gp.player.getCenterY() < getCenterY()) {
+                    direction = "up";
+                } else {
+                    direction = "down";
+                }
+            }
+            actionLockCounter = 0;
+        }
+    }
+
     public String getOppositeDirection(String direction) {
         String oppositeDirection = "";
 
@@ -873,7 +896,7 @@ public class Entity {
             image = uTool.scaleImage(image, width, height);
 
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error loading image: " + imagePath, e);
+            System.out.println(imagePath);
         }
 
         return image;
