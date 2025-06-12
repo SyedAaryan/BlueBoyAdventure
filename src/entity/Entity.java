@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Entity {
@@ -48,7 +47,7 @@ public class Entity {
     public boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
-    boolean hpBarOn = false;
+    public boolean hpBarOn = false;
     public boolean onPath = false;
     public boolean knockBack = false;
     public String knockBackDirection;
@@ -63,7 +62,7 @@ public class Entity {
     public int invincibleCounter = 0;
     public int shotAvailableCounter = 0;
     int dyingCounter = 0;
-    int hpBarCounter = 0;
+    public int hpBarCounter = 0;
     int knockBackCounter = 0;
     public int guardCounter = 0;
     int offBalanceCounter = 0;
@@ -91,6 +90,7 @@ public class Entity {
     public Entity currentShield;
     public Projectile projectile;
     public Entity currentLight;
+    public boolean boss;
 
     // ITEM ATTRIBUTES
     public int value;
@@ -136,6 +136,14 @@ public class Entity {
 
     public int getCenterY() {
         return worldY + up1.getHeight() / 2;
+    }
+
+    public int getScreenX() {
+        return worldX - gp.player.worldX + gp.player.screenX;
+    }
+
+    public int getScreenY() {
+        return worldY - gp.player.worldY + gp.player.screenY;
     }
 
     public int getLeftX() {
@@ -670,23 +678,26 @@ public class Entity {
         target.knockBack = true;
     }
 
-    public void draw(Graphics2D g2) {
-
-        BufferedImage image = null;
-
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
+    public boolean inCamera() {
+        boolean inCamera = false;
         if (
                 worldX + gp.tileSize * 5 > gp.player.worldX - gp.player.screenX &&
                         worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                         worldY + gp.tileSize * 5 > gp.player.worldY - gp.player.screenY &&
                         worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
         ) {
+            inCamera = true;
+        }
+        return inCamera;
+    }
 
+    public void draw(Graphics2D g2) {
 
-            int tempScreenX = screenX;
-            int tempScreenY = screenY;
+        BufferedImage image = null;
+
+        if (inCamera()) {
+            int tempScreenX = getScreenX();
+            int tempScreenY = getScreenY();
 
             // THIS IS WHERE WE DRAW IF THE PLAYER IS ATTACKING OR IN NORMAL STATE
             switch (direction) {
@@ -702,7 +713,7 @@ public class Entity {
                     }
 
                     if (attacking) {
-                        tempScreenY = screenY - up1.getHeight();
+                        tempScreenY = getScreenY() - up1.getHeight();
                         if (spriteNum == 1) {
                             image = attackUp1;
                         }
@@ -756,7 +767,7 @@ public class Entity {
                     }
 
                     if (attacking) {
-                        tempScreenX = screenX - left1.getWidth();
+                        tempScreenX = getScreenX() - left1.getWidth();
                         if (spriteNum == 1) {
                             image = attackLeft1;
                         }
@@ -797,33 +808,6 @@ public class Entity {
                     }
                 }
             }
-
-            //MONSTER HP BAR
-            if (type == 2 && hpBarOn) {
-
-                /*This divides the monsters health bar with its max life, i,e one tile
-                 * here is 48 pixels, if the monster HP is 4, then 1 scale will be 12 as
-                 * 12 * 4 = 48*/
-                double oneScale = (double) gp.tileSize / maxLife;
-
-                // With the above value, we can find out the health bar value
-                double hpBarValue = oneScale * life;
-
-                g2.setColor(new Color(35, 35, 35));
-                g2.fillRect(screenX - 1, screenY - 16, gp.tileSize + 2, 12);
-
-                g2.setColor(new Color(255, 0, 30));
-                g2.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
-
-                hpBarCounter++;
-
-                if (hpBarCounter > 600) {
-                    hpBarCounter = 0;
-                    hpBarOn = false;
-                }
-
-            }
-
 
             if (invincible) {
                 hpBarOn = true;
